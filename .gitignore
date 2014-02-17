@@ -12,6 +12,10 @@
 *.la
 *.a
 
+# VIM Swamfiles
+.*.swp
+.*.swo
+
 # CMake files
 build/
 CMakeCache.txt

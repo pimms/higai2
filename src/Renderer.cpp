@@ -53,7 +53,6 @@ void Renderer::DrawPathNode(PathNode *node, int worldSizeX, int worldSizeY) {
 	// Draw the tile
 	SetRenderColor(node);
 	DrawRect(topX+1, topY+1, sizeX-1, sizeY-1);
-			
 }
 
 
