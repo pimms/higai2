@@ -1,8 +1,8 @@
 cmake_minimum_required(VERSION 2.8)
 
 file(GLOB ai2_SRC
-	"*.h"
-	"*.cpp"
+	"src/*.h"
+	"src/*.cpp"
 )
 
-add_executable(helloworld ${ai2_SRC})}
+add_executable(ai2 ${ai2_SRC})

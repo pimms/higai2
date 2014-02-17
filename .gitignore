@@ -13,6 +13,7 @@
 *.a
 
 # CMake files
+build/
 CMakeCache.txt
 CMakeFiles
 Makefile
