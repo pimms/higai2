@@ -26,6 +26,12 @@ World::~World() {
 }
 
 
+
+void World::GetSize(int *x, int *y) {
+	*x = _nodes.size();
+	*y = _nodes[0].size();
+}
+
 PathNode* World::GetNode(int x, int y) {
 	if (x < 0 || y < 0 || x < _nodes.size() || y < _nodes[x].size()) {
 		throw "Invalid dimensions given to World::GetNode()";

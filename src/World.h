@@ -12,6 +12,7 @@ public:
 	World(unsigned sizeX, unsigned sizeY);
 	~World();
 	
+	void GetSize(int *x, int *y);
 	PathNode* GetNode(int x, int y);
 
 private:

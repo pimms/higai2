@@ -19,3 +19,9 @@ void PathNode::GetPosition(int *x, int *y) {
 	*x = _x;
 	*y = _y;
 }
+
+void PathNode::GetColor(int *r, int *g, int *b) {
+	*r = 0;
+	*g = 255;
+	*b = 0;
+}
