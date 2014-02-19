@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Vec.h"
+#include "Color.h"
 
 /* The PathNode class should not be aware of what
  * the pathfinding algorithm does. Calculate G, H and F 
@@ -15,14 +16,17 @@ public:
 
 	PathNode(int x, int y);
 	~PathNode();
-	
+
 	void GetPosition(int *x, int *y);
 	Vec GetPosition();
+
 	void GetColor(int *r, int *g, int *b);
+	Color GetColor();
+
 
 	Type GetType();
 	void SetType(Type type);
-					
+
 private:
 	Type _type;
 
