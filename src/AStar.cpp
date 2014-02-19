@@ -39,21 +39,18 @@ list<PathNode*> AStar::Find(PathNode *start, PathNode *end) {
 	return list<PathNode*>();
 }
 
+
+/***** Private Methods *****/
 void AStar::addToOpen(PathNode *node) {
 	Vec pos = node->GetPosition();
 
-	Vec vecs[4];
+	const list<PathNode*> nbs = node->GetNeighbours();
+	list<PathNode*>::const_iterator it; 
 
-	vecs[0] = Vec(pos.x, pos.y + 1);
-	vecs[1] = Vec(pos.x, pos.y - 1);
-	vecs[2] = Vec(pos.x - 1, pos.y);
-	vecs[3] = Vec(pos.x - 1, pos.y);
-
-	for (int i = 0; i < 4; ++i)
-	{
-		if (_world->GetNode(vecs[i].x, vecs[i].y)->GetType() == PathNode::WALKABLE) {
-			open.push_back(_world->GetNode(vecs[i].x, vecs[i].y));
-
+	for (it = nbs.begin(); it != nbs.end(); it++) {
+		PathNode *nb = *it;
+		if (nb->GetType() == PathNode::WALKABLE) {
+			open.push_back(nb);
 		}
 	}
 }
