@@ -1,6 +1,8 @@
 #pragma once 
 
+#include "World.h"
 #include <list>
+#include <vector>
 using std::list;
 
 
@@ -18,10 +20,25 @@ class PathNode;
  */
 class AStar {
 public:
-	AStar();
+	AStar(World *world);
 	~AStar();
 
 	list<PathNode*> Find(PathNode *s, PathNode *e);
+	void addToOpen(PathNode *node);
+	virtual int f();
 
 private:
+	std::vector<PathNode*> open;
+	std::vector<PathNode*> closed;
+	World *_world;
 };
+
+
+/*
+struct AStarNode {
+		PathNode *parent;
+		PathNode* node;
+		int h;
+		int g;
+	};
+*/

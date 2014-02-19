@@ -16,6 +16,10 @@ PathNode::~PathNode() {
 
 }
 
+struct nodeValue {
+	int g;
+	int h;
+};
 
 void PathNode::GetPosition(int *x, int *y) {
 	*x = _x;
@@ -45,7 +49,6 @@ Color PathNode::GetColor() {
 	
 	return Color(0, 255, 0);
 }
-
 
 PathNode::Type PathNode::GetType() {
 	return _type;
