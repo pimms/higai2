@@ -8,6 +8,8 @@ PathNode::PathNode(int x, int y)
 {
 	this->GetPosition(NULL, NULL);
 	this->GetPosition(NULL, NULL);
+
+	_type = Type::WALKABLE;
 }
 
 PathNode::~PathNode() {
@@ -24,12 +26,20 @@ void PathNode::GetPosition(int *x, int *y) {
 	*y = _y;
 }
 
+Vec PathNode::GetPosition() {
+	return VecI(_x, _y);
+}
+
 void PathNode::GetColor(int *r, int *g, int *b) {
 	*r = 0;
 	*g = 255;
 	*b = 0;
 }
 
-int f() {
-	return nodeValue.g + nodeValue.h;
+PathNode::Type PathNode::GetType() {
+	return _type;
+}
+
+void PathNode::SetType(PathNode::Type type) {
+	_type = type;
 }

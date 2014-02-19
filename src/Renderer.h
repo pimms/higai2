@@ -1,6 +1,10 @@
 #pragma once
 
 #include <SDL2/SDL.h>
+#include "Vec.h"
+
+#include <list>
+using std::list;
 
 // Forward declarations
 class Window;
@@ -13,12 +17,19 @@ public:
 	Renderer(Window *Window);
 	
 	void DrawWorld(World *world);
+	void DrawPath(World *world, const list<PathNode*> &path);
 
 private:
-	void DrawPathNode(PathNode *node, int worldSizeX, int worldSizeY);
+	void DrawPathNode(World *world, PathNode *node);
 	
 	void SetRenderColor(PathNode *node);
-	void DrawRect(int x, int y, int w, int h);
+	void DrawRect(Vec pos, Vec dim);
+	
+	Vec GetTileDimensions(World *world);
+
+	/* If center is true, the center of the tile is returned. Otherwise, the 
+	 * top left corner is returned. */
+	 Vec GetTileCoordinate(World *world, PathNode *node, bool center);
 
 	Window *_window;
 };
