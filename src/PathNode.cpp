@@ -30,7 +30,7 @@ void PathNode::GetColor(int *r, int *g, int *b) {
 
 
 PathNode::Type PathNode::GetType() {
-		return _type;
+	return _type;
 }
 
 void PathNode::SetType(PathNode::Type type) {
