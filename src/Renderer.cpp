@@ -23,14 +23,16 @@ void Renderer::DrawWorld(World *world) {
 	}
 }
 
-void Renderer::DrawPath(World *world, const list<PathNode*> &path) {
+void Renderer::DrawPath(World *world, const list<PathNode*> &path, Color color) {
 	int sizeX, sizeY;
 	world->GetSize(&sizeX, &sizeY);
 	
 	list<PathNode*>::const_iterator cur = path.begin();
 	list<PathNode*>::const_iterator next = path.begin();
 	next++;
-	
+
+	color.Assign(_window->GetRenderer());
+
 	while (next != path.end()) {
 		Vec cp, np;
 		cp = GetTileCoordinate(world, *cur, true);
@@ -65,9 +67,8 @@ void Renderer::DrawPathNode(World *world, PathNode *node) {
 
 
 void Renderer::SetRenderColor(PathNode *node) {
-	int r, g, b;
-	node->GetColor(&r, &g, &b);
-	SDL_SetRenderDrawColor(_window->GetRenderer(), r, g, b, 255);
+	Color color = node->GetColor();
+	color.Assign(_window->GetRenderer());	
 }
 
 void Renderer::DrawRect(Vec pos, Vec dim) {

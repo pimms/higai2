@@ -2,6 +2,7 @@
 
 #include <SDL2/SDL.h>
 #include "Vec.h"
+#include "Color.h"
 
 #include <list>
 using std::list;
@@ -17,7 +18,7 @@ public:
 	Renderer(Window *Window);
 	
 	void DrawWorld(World *world);
-	void DrawPath(World *world, const list<PathNode*> &path);
+	void DrawPath(World *world, const list<PathNode*> &path, Color=Color(0,0,0));
 
 private:
 	void DrawPathNode(World *world, PathNode *node);

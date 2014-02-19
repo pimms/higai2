@@ -9,7 +9,7 @@ PathNode::PathNode(int x, int y)
 	this->GetPosition(NULL, NULL);
 	this->GetPosition(NULL, NULL);
 
-	_type = Type::WALKABLE;
+	_type = PathNode::WALKABLE;
 }
 
 PathNode::~PathNode() {
@@ -26,10 +26,24 @@ Vec PathNode::GetPosition() {
 	return VecI(_x, _y);
 }
 
+
 void PathNode::GetColor(int *r, int *g, int *b) {
-	*r = 0;
-	*g = 255;
-	*b = 0;
+	Color c = GetColor();
+
+	*r = c.r;
+	*g = c.g;
+	*b = c.b;
+}
+
+Color PathNode::GetColor() {
+	switch (_type) {
+		case WALKABLE:
+			return Color(0, 180, 0);
+		case WALL:
+			return Color(0, 0, 160);
+	}
+	
+	return Color(0, 255, 0);
 }
 
 
