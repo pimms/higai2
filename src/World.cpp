@@ -32,6 +32,11 @@ void World::GetSize(int *x, int *y) {
 	*y = _nodes[0].size();
 }
 
+Vec World::GetSize() {
+	return Vec(_nodes.size(), _nodes[0].size());
+}
+
+
 PathNode* World::GetNode(int x, int y) {
 	if (x < 0 || y < 0 || x < _nodes.size() || y < _nodes[x].size()) {
 		throw "Invalid dimensions given to World::GetNode()";
@@ -39,3 +44,8 @@ PathNode* World::GetNode(int x, int y) {
 
 	return _nodes[x][y];
 }
+
+PathNode* World::GetNode(Vec vec) {
+	return GetNode(vec.x, vec.y);
+}
+
