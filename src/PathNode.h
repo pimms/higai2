@@ -1,5 +1,8 @@
 #pragma once
 
+#include <list>
+using std::list;
+
 #include "Vec.h"
 #include "Color.h"
 
@@ -17,18 +20,21 @@ public:
 	PathNode(int x, int y);
 	~PathNode();
 
-	void GetPosition(int *x, int *y);
-	Vec GetPosition();
+	void GetPosition(int *x, int *y) const;
+	Vec GetPosition() const;
 
-	void GetColor(int *r, int *g, int *b);
-	Color GetColor();
+	void GetColor(int *r, int *g, int *b) const;
+	Color GetColor() const;
 
-
-	Type GetType();
+	Type GetType() const;
 	void SetType(Type type);
+
+	void AddNeighbour(PathNode *node);
+	const list<PathNode*>& GetNeighbours() const; 	
 
 private:
 	Type _type;
+	list<PathNode*> _neighbours;
 
 	int _x;
 	int _y;
