@@ -3,6 +3,7 @@
 #include <list>
 using std::list;
 
+#include "Vec.h"
 
 // Forward declarations
 class PathNode;
@@ -24,8 +25,6 @@ private:
 						list<PathNode*>::iterator &end);
 
 	bool ClearLineOfSight(PathNode *start, PathNode *b);
-	void GetIntersectionTestArea(PathNode *start, PathNode *end, 
-								int *x1, int *y1, int *x2, int *y2);
-	void GetPathLine(PathNode *start, PathNode *end, 
-					 int *x1, int *y1, int *x2, int *y2);
+	void GetIntersectionTestArea(PathNode *start, PathNode *end, Vec &tl, Vec &br);
+	void GetPathLine(PathNode *start, PathNode *end, Vec &p1, Vec &p2);
 };

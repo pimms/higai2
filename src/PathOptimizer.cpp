@@ -37,28 +37,25 @@ void PathOptimizer::GetIterators(const list<PathNode*>::iterator &context,
 
 
 bool PathOptimizer::ClearLineOfSight(PathNode *start, PathNode *end) {
-	int rx1, rx2, ry1, ry2;
-	GetIntersectionTestArea(start, end, &rx1, &ry1, &rx2, &ry2);
-	
 
 }
 
 void PathOptimizer::GetIntersectionTestArea(PathNode *start, PathNode *end,
-											int *x1, int *y1, int *x2, int *y2)
+											Vec &tl, Vec &br)
 {
 	int sx, sy, ex, ey;
 	start->GetPosition(&sx, &sy);
 	end->GetPosition(&ex, &ey);
 
-	*x1 = min(sx, ex);
-	*y1 = min(sy, ey);
-	*x2 = max(sx, ex);
-	*y2 = max(sy, ey);
+	tl.x = min(sx, ex);
+	tl.y = min(sy, ey);
+	br.x = max(sx, ex);
+	br.y = max(sy, ey);
 }
 
 void PathOptimizer::GetPathLine(PathNode *start, PathNode *end,
-								int *x1, int *y1, int *x2, int *y2) 
+								Vec &p1, Vec &p2) 
 {
-	start->GetPosition(x1, y1);
-	end->GetPosition(x2, y2);
+	p1 = start->GetPosition();
+	p2 = end->GetPosition();
 }
