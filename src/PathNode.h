@@ -15,14 +15,14 @@ public:
 
 	PathNode(int x, int y);
 	~PathNode();
-	
+
 	void GetPosition(int *x, int *y);
 	Vec GetPosition();
 	void GetColor(int *r, int *g, int *b);
 
 	Type GetType();
 	void SetType(Type type);
-					
+
 private:
 	Type _type;
 
