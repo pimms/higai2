@@ -53,11 +53,12 @@ void AStar::addToOpen(PathNode *node) {
 	{
 		if (_world->GetNode(vecs[i].x, vecs[i].y)->GetType() == PathNode::WALKABLE) {
 			open.push_back(_world->GetNode(vecs[i].x, vecs[i].y));
-			
+
 		}
 	}
 }
 
-int AStar::f() {
+int f() {
 	//return pathValue.h + pathValue.g;
+	return 0;
 }
