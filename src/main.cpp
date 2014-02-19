@@ -12,7 +12,6 @@ int main() {
 	while (window.ShouldQuit() == false) {
 		window.HandleEvents();
 		renderer.DrawWorld(&world);
-		
 	}
 
 	return 0;
