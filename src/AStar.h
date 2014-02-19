@@ -24,21 +24,14 @@ public:
 	~AStar();
 
 	list<PathNode*> Find(PathNode *s, PathNode *e);
+
+private:
 	void addToOpen(PathNode *node);
 	virtual int f();
 
-private:
 	std::vector<PathNode*> open;
 	std::vector<PathNode*> closed;
 	World *_world;
 };
 
 
-/*
-struct AStarNode {
-		PathNode *parent;
-		PathNode* node;
-		int h;
-		int g;
-	};
-*/
