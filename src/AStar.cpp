@@ -36,6 +36,7 @@ list<PathNode*> AStar::Find(PathNode *start, PathNode *end) {
 		}
 	}
 
+
 	return list<PathNode*>();
 }
 

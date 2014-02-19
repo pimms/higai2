@@ -31,6 +31,7 @@ private:
 
 	std::vector<PathNode*> open;
 	std::vector<PathNode*> closed;
+
 	World *_world;
 };
 
