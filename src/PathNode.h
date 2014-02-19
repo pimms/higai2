@@ -10,8 +10,10 @@ public:
 	PathNode(int x, int y);
 	~PathNode();
 	
-	void GetPosition(int *x, int *y);
-	void GetColor(int *r, int *g, int *b);
+	void 	GetPosition(int *x, int *y);
+	void 	GetColor(int *r, int *g, int *b);
+
+	int 	f();
 
 					
 private:
