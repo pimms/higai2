@@ -22,6 +22,10 @@ void PathNode::GetPosition(int *x, int *y) {
 	*y = _y;
 }
 
+Vec PathNode::GetPosition() {
+	return VecI(_x, _y);
+}
+
 void PathNode::GetColor(int *r, int *g, int *b) {
 	*r = 0;
 	*g = 255;

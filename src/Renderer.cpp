@@ -32,11 +32,11 @@ void Renderer::DrawPath(World *world, const list<PathNode*> &path) {
 	next++;
 	
 	while (next != path.end()) {
-		int x1, y1, x2, y2;
-		GetTileCoordinate(world, *cur, true, &x1, &y1);
-		GetTileCoordinate(world, *next, true, &x2, &y2);
+		Vec cp, np;
+		cp = GetTileCoordinate(world, *cur, true);
+		np = GetTileCoordinate(world, *next, true);
 
-		SDL_RenderDrawLine(_window->GetRenderer(), x1, y1, x2, y2);
+		SDL_RenderDrawLine(_window->GetRenderer(), cp.x, cp.y, np.x, np.y);
 
 		next++;
 		cur++;
@@ -46,22 +46,21 @@ void Renderer::DrawPath(World *world, const list<PathNode*> &path) {
 
 /**** Private Methods *****/
 void Renderer::DrawPathNode(World *world, PathNode *node) {
-	// The screen coordinate of the node
-	int topX, topY;
-
-	// The size of the node
-	int sizeX, sizeY;
 	
-	GetTileDimensions(world, &sizeX, &sizeY);
-	GetTileCoordinate(world, node, false, &topX, &topY);
+	Vec dim = GetTileDimensions(world);
+	Vec pos = GetTileCoordinate(world, node, false);
 
 	// Draw a black 1px outline
 	SDL_SetRenderDrawColor(_window->GetRenderer(), 0, 0, 0, 255);
-	DrawRect(topX, topY, sizeX, sizeY);
+	DrawRect(pos, dim);
 	
+
 	// Draw the tile
+	pos.x += 1; pos.y += 1;
+	dim.x -= 2; dim.y -= 2;
+
 	SetRenderColor(node);
-	DrawRect(topX+1, topY+1, sizeX-1, sizeY-1);
+	DrawRect(pos, dim);
 }
 
 
@@ -71,36 +70,33 @@ void Renderer::SetRenderColor(PathNode *node) {
 	SDL_SetRenderDrawColor(_window->GetRenderer(), r, g, b, 255);
 }
 
-void Renderer::DrawRect(int x, int y, int w, int h) {
-	SDL_Rect rect = {x, y, w, h};
+void Renderer::DrawRect(Vec pos, Vec dim) {
+	SDL_Rect rect = {pos.x, pos.y, dim.x, dim.y};
 	SDL_RenderDrawRect(_window->GetRenderer(), &rect);
 }
 
 
-void Renderer::GetTileDimensions(World *world, int *x, int *y) {
+Vec Renderer::GetTileDimensions(World *world) {
 	int sizeX, sizeY;
 	world->GetSize(&sizeX, &sizeY);
 	
 	int resX, resY;
 	_window->GetResolution(&resX, &resY);
 	
-	*x = resX / sizeX;
-	*y = resY / sizeY;
+	return Vec(resX/sizeX, resY/sizeY);
 }
 
-void Renderer::GetTileCoordinate(World *world, PathNode *node, 
-								bool center, int *x, int *y) {
+Vec Renderer::GetTileCoordinate(World *world, PathNode *node, bool center) {
 	int sizeX, sizeY;
 	int posX, posY;
 
 	world->GetSize(&sizeX, &sizeY);
 	node->GetPosition(&posX, &posY);
 	
-	*x = sizeX * posX; 
-	*y = sizeY * posY;
+	Vec v(sizeX * posX, sizeY * posY);
 
 	if (center) {
-		*x += sizeX / 2;
-		*y += sizeY / 2;
+		v.x += sizeX / 2;
+		v.y += sizeY / 2;
 	}
 }

@@ -1,8 +1,9 @@
 #pragma once
 
 #include <SDL2/SDL.h>
-#include <list>
+#include "Vec.h"
 
+#include <list>
 using std::list;
 
 // Forward declarations
@@ -22,18 +23,13 @@ private:
 	void DrawPathNode(World *world, PathNode *node);
 	
 	void SetRenderColor(PathNode *node);
-	void DrawRect(int x, int y, int w, int h);
+	void DrawRect(Vec pos, Vec dim);
 	
-	/* Assigns the pixel size of each tile to W and H.
-	 */
-	void GetTileDimensions(World *world, int *w, int *h);
+	Vec GetTileDimensions(World *world);
 
-	/* Assigns the screen coordinates of the path node "node" to X and Y.
-	 * If center is true, the center of the tile is assigned to the variables.
-	 * Otherwise, the top left position is assigned.
-	 */
-	void GetTileCoordinate(World *world, PathNode *node, 
-							bool center, int *x, int *y);
+	/* If center is true, the center of the tile is returned. Otherwise, the 
+	 * top left corner is returned. */
+	 Vec GetTileCoordinate(World *world, PathNode *node, bool center);
 
 	Window *_window;
 };
