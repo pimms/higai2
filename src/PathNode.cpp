@@ -54,3 +54,4 @@ PathNode::Type PathNode::GetType() {
 void PathNode::SetType(PathNode::Type type) {
 	_type = type;
 }
+
