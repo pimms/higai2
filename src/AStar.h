@@ -3,11 +3,15 @@
 #include "World.h"
 #include <list>
 #include <vector>
-using std::list;
+#include <map>
 
+using std::list;
+using std::vector;
+using std::map;
 
 // Forward declarations
 class PathNode;
+class AStarNode;
 
 
 /* AStar
@@ -26,13 +30,38 @@ public:
 	list<PathNode*> Find(PathNode *s, PathNode *e);
 
 private:
-	void addToOpen(PathNode *node);
-	virtual int f();
+	void Initialize(PathNode *start, PathNode *end);
+	void CleanUp();
+	
+	AStarNode* GetNode(PathNode*);
 
-	std::vector<PathNode*> open;
-	std::vector<PathNode*> closed;
+	void AddToOpen(AStarNode *node);
+	
+	map<PathNode*,AStarNode*> _nmap;
+	PathNode *_target;
+
+	vector<AStarNode*> _open;
+	vector<AStarNode*> _closed;
 
 	World *_world;
 };
 
 
+class AStarNode {
+public:
+	AStarNode(PathNode *pathNode);
+	
+	virtual int F();
+
+	virtual void CalculateH(PathNode *target);
+	virtual void SetParent(AStarNode *parent);
+	
+	PathNode* PNode();
+
+protected:
+	PathNode *_pnode;
+	AStarNode *_parent;
+
+	int _h;
+	int _g;
+};
