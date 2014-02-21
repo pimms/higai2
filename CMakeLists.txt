@@ -12,4 +12,4 @@ if (WIN32)
 endif(WIN32)
 
 add_executable(ai2 ${ai2_SRC})
-target_link_libraries(ai2 SDL2 SDL2main)
+target_link_libraries(ai2 SDL2)
