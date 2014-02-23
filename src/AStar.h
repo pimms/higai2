@@ -13,7 +13,6 @@ using std::map;
 class PathNode;
 class AStarNode;
 
-
 /* AStar
  *
  * Class responsible for finding a path between two waypoints.

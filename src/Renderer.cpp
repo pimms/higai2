@@ -15,12 +15,16 @@ void Renderer::DrawWorld(World *world) {
 	int sizeX, sizeY;
 	world->GetSize(&sizeX, &sizeY);
 
+	_window->ClearRenderer();
+
 	for (int x = 0; x < sizeX; x++) {
 		for (int y = 0; y < sizeY; y++) {
 			PathNode *node = world->GetNode(x, y);
 			DrawPathNode(world, node);
 		}
 	}
+
+	_window->PresentRenderer();	
 }
 
 void Renderer::DrawPath(World *world, const list<PathNode*> &path, Color color) {
@@ -52,11 +56,13 @@ void Renderer::DrawPathNode(World *world, PathNode *node) {
 	Vec dim = GetTileDimensions(world);
 	Vec pos = GetTileCoordinate(world, node, false);
 
+	printf("Rect: [%i, %i,  %i x %i\n",
+			pos.x, pos.y, dim.x, dim.y);
+	
 	// Draw a black 1px outline
 	SDL_SetRenderDrawColor(_window->GetRenderer(), 0, 0, 0, 255);
 	DrawRect(pos, dim);
 	
-
 	// Draw the tile
 	pos.x += 1; pos.y += 1;
 	dim.x -= 2; dim.y -= 2;

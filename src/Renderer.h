@@ -18,7 +18,7 @@ public:
 	Renderer(Window *Window);
 	
 	void DrawWorld(World *world);
-	void DrawPath(World *world, const list<PathNode*> &path, Color=Color(0,0,0));
+	void DrawPath(World*, const list<PathNode*>&, Color=Color(0,0,0));
 
 private:
 	void DrawPathNode(World *world, PathNode *node);
@@ -28,8 +28,8 @@ private:
 	
 	Vec GetTileDimensions(World *world);
 
-	/* If center is true, the center of the tile is returned. Otherwise, the 
-	 * top left corner is returned. */
+	/* If center is true, the center of the tile is returned. 
+	 * Otherwise, the top left corner is returned. */
 	 Vec GetTileCoordinate(World *world, PathNode *node, bool center);
 
 	Window *_window;

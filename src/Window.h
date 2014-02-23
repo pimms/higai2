@@ -1,27 +1,32 @@
 #pragma once
 
 #include <SDL2/SDL.h>
+#include "Vec.h"
 
 
 class Window {
 public:
-	// TODO:
-	// Assign the current resolution of the window
-	void GetResolution(int *x, int *y) {} 
-	
-	// TODO:
-	// Move this method to the cpp file 
-	SDL_Renderer* GetRenderer() {return _renderer;}
-	
-	// TODO: 
-	// Return a proper value
-	bool ShouldQuit() { return true; }
+	Window();
+	~Window();
 
-	// TODO:
-	// Handle all events
-	void HandleEvents() {}
+	bool Init(int width, int height);
+
+	void GetResolution(int *x, int *y) const;
+	Vec GetResolution() const;
+
+	SDL_Renderer* GetRenderer() const;
+	
+	bool ShouldQuit() const;
+
+	void HandleEvents(); 
+
+	void ClearRenderer();
+	void PresentRenderer();
 
 private:
 	SDL_Window *_window;
 	SDL_Renderer *_renderer;
+
+	Vec _resolution;
+	bool _shouldQuit;
 };

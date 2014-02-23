@@ -6,9 +6,6 @@ PathNode::PathNode(int x, int y)
 	: 	_x(x),
 		_y(y) 
 {
-	this->GetPosition(NULL, NULL);
-	this->GetPosition(NULL, NULL);
-
 	_type = PathNode::WALKABLE;
 }
 
