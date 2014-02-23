@@ -1,8 +1,12 @@
 #pragma once
 
+#ifdef WIN32
+#include <SDL.h>
+#else
 #include <SDL2/SDL.h>
-#include "Vec.h"
+#endif
 
+#include "Vec.h"
 
 class Window {
 public:
