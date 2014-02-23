@@ -1,6 +1,12 @@
 #pragma once
 
-#include <SDL2/SDL.h>
+
+#ifdef WIN32
+#include <SDL.h>
+#else
+#include "SDL2/SDL.h"
+#endif
+
 
 typedef unsigned char byte;
 
