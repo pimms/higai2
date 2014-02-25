@@ -27,7 +27,8 @@ void Renderer::DrawWorld(World *world) {
 	_window->PresentRenderer();	
 }
 
-void Renderer::DrawPath(World *world, const list<PathNode*> &path, Color color) {
+void Renderer::DrawPath(World *world, const list<PathNode*> &path, 
+						Color color) {
 	int sizeX, sizeY;
 	world->GetSize(&sizeX, &sizeY);
 	
@@ -55,9 +56,6 @@ void Renderer::DrawPathNode(World *world, PathNode *node) {
 	
 	Vec dim = GetTileDimensions(world);
 	Vec pos = GetTileCoordinate(world, node, false);
-
-	printf("Rect: [%i, %i,  %i x %i\n",
-			pos.x, pos.y, dim.x, dim.y);
 	
 	// Draw a black 1px outline
 	SDL_SetRenderDrawColor(_window->GetRenderer(), 0, 0, 0, 255);
@@ -106,4 +104,6 @@ Vec Renderer::GetTileCoordinate(World *world, PathNode *node, bool center) {
 		v.x += sizeX / 2;
 		v.y += sizeY / 2;
 	}
+
+	return v;
 }

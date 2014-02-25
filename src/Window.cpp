@@ -45,7 +45,7 @@ bool Window::Init(int width, int height) {
 		return false;
 	}
 
-
+	_resolution = Vec(width, height);
 	return true;
 }
 
