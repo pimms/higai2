@@ -76,6 +76,8 @@ int main(int argc, char *argv[])
     } catch (...) {
         printf("Unkown exception caught: no info available\n");
     }
-
-    printf("ai_main terminated with status %i\n", ret);
+	
+	if (ret)
+	    printf("ai_main terminated with status %i\n", ret);
+	return ret;
 }
