@@ -6,7 +6,13 @@
 #include <SDL2/SDL.h>
 #endif
 
+#include <list>
+using std::list;
+
 #include "Vec.h"
+
+// Forward declarations
+class MouseListener;
 
 class Window
 {
@@ -28,12 +34,19 @@ public:
     void ClearRenderer();
     void PresentRenderer();
 
+	void AddListener(MouseListener *listener);
+	void RemoveListener(MouseListener *listener);
+		
 private:
+	void DispatchMouseClick(int x, int y);
+
     SDL_Window *_window;
     SDL_Renderer *_renderer;
 
     Vec _resolution;
     bool _shouldQuit;
+
+	list<MouseListener*> _listeners;
 };
 
 /* Virtual callback class

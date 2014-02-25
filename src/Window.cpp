@@ -86,6 +86,10 @@ void Window::HandleEvents()
         case SDL_QUIT:
             _shouldQuit = true;
 
+		case SDL_MOUSEBUTTONDOWN:
+			DispatchMouseClick(evt.button.x, evt.button.y);
+			break;
+
         default:
             /* Don't handle */
             break;
@@ -102,4 +106,26 @@ void Window::ClearRenderer()
 void Window::PresentRenderer()
 {
     SDL_RenderPresent(_renderer);
+}
+
+
+void Window::AddListener(MouseListener *listener) 
+{
+	_listeners.push_back(listener);
+}
+
+void Window::RemoveListener(MouseListener *listener) 
+{
+	_listeners.remove(listener);
+}
+
+
+/***** Private Methods *****/
+void Window::DispatchMouseClick(int x, int y) 
+{
+	list<MouseListener*>::iterator it;
+	
+	for (it=_listeners.begin(); it!=_listeners.end(); it++) {
+		(*it)->OnMouseClick(Vec(x,y));
+	}
 }

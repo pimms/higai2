@@ -2,6 +2,7 @@
 #include "Window.h"
 #include "Renderer.h"
 #include "PathNode.h"
+#include "GraphMapper.h"
 #include <string>
 
 void InitializeWorld(World *world)
@@ -33,19 +34,29 @@ void InitializeWorld(World *world)
 
 int ai_main(int argc, char *argv[])
 {
+	// Initialize the world
     World world(20, 20);
     InitializeWorld(&world);
 
+
+	// Initialize the window
     Window window;
     if (!window.Init(600, 600)) {
         return 1;
     }
 
+	// Initialize the graph mapper
+	GraphMapper mapper(&world);
+	window.AddListener(&mapper);
+	
+	// Initialize the renderer
     Renderer renderer(&window);
-
+	
+	// Enter the simulation loop
     while (window.ShouldQuit() == false) {
         window.HandleEvents();
         renderer.DrawWorld(&world);
+		SDL_Delay(50);
     }
     return 0;
 }
