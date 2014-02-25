@@ -54,4 +54,3 @@ PathNode* World::GetNode(Vec vec)
 {
     return GetNode(vec.x, vec.y);
 }
-

@@ -21,6 +21,7 @@ public:
     PathNode* GetNode(int x, int y);
     PathNode* GetNode(Vec v);
 
+
 private:
     vector< vector<PathNode*> > _nodes;
 };

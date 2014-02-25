@@ -46,7 +46,7 @@ int ai_main(int argc, char *argv[])
     }
 
 	// Initialize the graph mapper
-	GraphMapper mapper(&world);
+	GraphMapper mapper(&world, &window);
 	window.AddListener(&mapper);
 	
 	// Initialize the renderer
@@ -58,6 +58,7 @@ int ai_main(int argc, char *argv[])
         renderer.DrawWorld(&world);
 		SDL_Delay(50);
     }
+
     return 0;
 }
 

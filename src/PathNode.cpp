@@ -65,24 +65,45 @@ void PathNode::SetType(PathNode::Type type)
 }
 
 
-void PathNode::AddNeighbour(World *world, PathNode *node)
+bool PathNode::AddNeighbour(World *world, PathNode *node)
 {
+	bool success = false;
+
 	PathAnalyzer analyzer(world);
 	if (!analyzer.IsClearLineOfSight(this, node)) {
-		return;
+		return false;
 	}
 
 	if (this == node) {
-		return;
+		return false;
 	}
 
 	if (!IsNeighbour(node)) {
     	_neighbours.push_back(node);
+		success = true;
 	}
 
 	if (!node->IsNeighbour(this)) {
 		node->_neighbours.push_back(this);
+		success = true;
 	}
+
+	return success;
+}
+
+bool PathNode::RemoveNeighbour(PathNode *node)
+{
+	if (IsNeighbour(node)) {
+		_neighbours.remove(node);
+
+		if (node->IsNeighbour(this)) {
+			node->_neighbours.remove(this);
+		}
+
+		return true;
+	}
+
+	return false;
 }
 
 bool PathNode::IsNeighbour(PathNode *node) 
