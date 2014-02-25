@@ -90,6 +90,10 @@ void Window::HandleEvents()
 			DispatchMouseClick(evt.button.x, evt.button.y);
 			break;
 
+		case SDL_KEYDOWN:
+			DispatchKeyDown(evt.key.keysym.sym);
+			break;
+
         default:
             /* Don't handle */
             break;
@@ -109,12 +113,12 @@ void Window::PresentRenderer()
 }
 
 
-void Window::AddListener(MouseListener *listener) 
+void Window::AddListener(InputListener *listener) 
 {
 	_listeners.push_back(listener);
 }
 
-void Window::RemoveListener(MouseListener *listener) 
+void Window::RemoveListener(InputListener *listener) 
 {
 	_listeners.remove(listener);
 }
@@ -123,9 +127,19 @@ void Window::RemoveListener(MouseListener *listener)
 /***** Private Methods *****/
 void Window::DispatchMouseClick(int x, int y) 
 {
-	list<MouseListener*>::iterator it;
+	list<InputListener*>::iterator it;
 	
 	for (it=_listeners.begin(); it!=_listeners.end(); it++) {
 		(*it)->OnMouseClick(Vec(x,y));
 	}
+}
+
+void Window::DispatchKeyDown(int key) 
+{
+	list<InputListener*>::iterator it;
+	
+	for (it=_listeners.begin(); it!=_listeners.end(); it++) {
+		(*it)->OnKeyDown(key);
+	}
+	
 }

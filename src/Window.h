@@ -12,7 +12,7 @@ using std::list;
 #include "Vec.h"
 
 // Forward declarations
-class MouseListener;
+class InputListener;
 
 class Window
 {
@@ -34,11 +34,12 @@ public:
     void ClearRenderer();
     void PresentRenderer();
 
-	void AddListener(MouseListener *listener);
-	void RemoveListener(MouseListener *listener);
+	void AddListener(InputListener *listener);
+	void RemoveListener(InputListener *listener);
 		
 private:
 	void DispatchMouseClick(int x, int y);
+	void DispatchKeyDown(int key);
 
     SDL_Window *_window;
     SDL_Renderer *_renderer;
@@ -46,13 +47,14 @@ private:
     Vec _resolution;
     bool _shouldQuit;
 
-	list<MouseListener*> _listeners;
+	list<InputListener*> _listeners;
 };
 
 /* Virtual callback class
  */
-class MouseListener
+class InputListener
 {
 public:
     virtual void OnMouseClick(Vec pos) = 0;
+	virtual void OnKeyDown(int key) = 0;
 };
