@@ -18,24 +18,26 @@ class PathNode;
 class World;
 
 
-class Renderer {
+class Renderer
+{
 public:
-	Renderer(Window *Window);
-	
-	void DrawWorld(World *world);
-	void DrawPath(World*, const list<PathNode*>&, Color=Color(0,0,0));
+    Renderer(Window *Window);
+
+    void DrawWorld(World *world);
+    void DrawPath(World*, const list<PathNode*>&, Color=Color(0,0,0));
 
 private:
-	void DrawPathNode(World *world, PathNode *node);
-	
-	void SetRenderColor(PathNode *node);
-	void DrawRect(Vec pos, Vec dim);
-	
-	Vec GetTileDimensions(World *world);
+	void DrawWaypointGraph(World *world);
+    void DrawPathNode(World *world, PathNode *node);
 
-	/* If center is true, the center of the tile is returned. 
-	 * Otherwise, the top left corner is returned. */
-	 Vec GetTileCoordinate(World *world, PathNode *node, bool center);
+    void SetRenderColor(PathNode *node);
+    void DrawRect(Vec pos, Vec dim);
 
-	Window *_window;
+    Vec GetTileDimensions(World *world);
+
+    /* If center is true, the center of the tile is returned.
+     * Otherwise, the top left corner is returned. */
+    Vec GetTileCoordinate(World *world, PathNode *node, bool center);
+
+    Window *_window;
 };

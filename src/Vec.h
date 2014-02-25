@@ -2,20 +2,23 @@
 
 
 template<typename T>
-class Vec_t {
+class Vec_t
+{
 public:
-	T x;
-	T y;
-	
-	Vec_t() {
-		x = (T)0;
-		y = (T)0;
-	}
+    T x;
+    T y;
 
-	Vec_t(T px, T py) {
-		x = px;
-		y = py;
-	}
+    Vec_t()
+    {
+        x = (T)0;
+        y = (T)0;
+    }
+
+    Vec_t(T px, T py)
+    {
+        x = px;
+        y = py;
+    }
 };
 
 

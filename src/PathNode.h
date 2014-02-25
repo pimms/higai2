@@ -6,37 +6,41 @@ using std::list;
 #include "Vec.h"
 #include "Color.h"
 
+class World;
+
 /* The PathNode class should not be aware of what
- * the pathfinding algorithm does. Calculate G, H and F 
+ * the pathfinding algorithm does. Calculate G, H and F
  * values in a wrapper class of some description.
  */
-class PathNode {
+class PathNode
+{
 public:
-	enum Type {
-		WALKABLE,
-		WALL,
-	};
+    enum Type {
+        WALKABLE,
+        WALL,
+    };
 
-	PathNode(int x, int y);
-	~PathNode();
+    PathNode(int x, int y);
+    ~PathNode();
 
-	void GetPosition(int *x, int *y) const;
-	Vec GetPosition() const;
+    void GetPosition(int *x, int *y) const;
+    Vec GetPosition() const;
 
-	void GetColor(int *r, int *g, int *b) const;
-	Color GetColor() const;
+    void GetColor(int *r, int *g, int *b) const;
+    Color GetColor() const;
 
-	Type GetType() const;
-	void SetType(Type type);
+    Type GetType() const;
+    void SetType(Type type);
 
-	void AddNeighbour(PathNode *node);
-	const list<PathNode*>& GetNeighbours() const; 	
+    void AddNeighbour(World *world, PathNode *node);
+	bool IsNeighbour(PathNode *node);
+    const list<PathNode*>& GetNeighbours() const;
 
 private:
-	Type _type;
-	list<PathNode*> _neighbours;
+    Type _type;
+    list<PathNode*> _neighbours;
 
-	int _x;
-	int _y;
+    int _x;
+    int _y;
 };
 
