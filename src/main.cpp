@@ -25,7 +25,6 @@ int ai_main(int argc, char *argv[])
     World world(20, 20);
     InitializeWorld(&world);
 
-
 	// Initialize the window
     Window window;
     if (!window.Init(600, 600)) {

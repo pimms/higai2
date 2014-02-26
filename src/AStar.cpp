@@ -6,6 +6,7 @@
 
 /***** AStar *****/
 AStar::AStar(World *world)
+	:	_world(world)
 {
 
 }
@@ -21,8 +22,8 @@ Path* AStar::Find(PathNode *start, PathNode *end)
     Initialize(start, end);
 
     bool success;
-    _open.push_back(GetNode(start));
-    AStarNode *node = NULL;
+    AStarNode *node = GetNode(start);
+    _open.push_back(node);
 
     while (_open.size() > 0) {
         AddToOpen(node);
@@ -98,15 +99,17 @@ AStarNode* AStar::GetNode(PathNode *pathnode)
 
 void AStar::AddToOpen(AStarNode *node)
 {
-	Vec dirs[4] = {
+	const Vec dirs[4] = {
 		Vec(-1, 0), Vec(1, 0),
 		Vec(0, -1), Vec(0, 1),
 	};
+	
+	const Vec coord = node->PNode()->GetPosition();
 
 	for (int i=0; i<4; i++) {
 		PathNode *nb;
 
-		Vec p = node->PNode()->GetPosition();
+		Vec p = coord;
 		p.x += dirs[i].x;
 		p.y += dirs[i].y;
 
@@ -120,8 +123,6 @@ void AStar::AddToOpen(AStarNode *node)
 		}
 	}
 }
-
-
 
 
 
