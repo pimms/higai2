@@ -12,6 +12,7 @@ using std::map;
 // Forward declarations
 class PathNode;
 class AStarNode;
+class Path;
 
 /* AStar
  *
@@ -27,7 +28,7 @@ public:
     AStar(World *world);
     ~AStar();
 
-    list<PathNode*> Find(PathNode *s, PathNode *e);
+    Path* Find(PathNode *s, PathNode *e);
 
 private:
     void Initialize(PathNode *start, PathNode *end);
@@ -56,6 +57,7 @@ public:
 
     virtual void CalculateH(PathNode *target);
     virtual void SetParent(AStarNode *parent);
+	AStarNode* GetParent();
 
     PathNode* PNode();
 

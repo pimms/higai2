@@ -2,6 +2,7 @@
 #include "PathNode.h"
 #include "Vec.h"
 #include "World.h"
+#include "Path.h"
 
 /***** AStar *****/
 AStar::AStar(World *world)
@@ -15,7 +16,7 @@ AStar::~AStar()
 }
 
 
-list<PathNode*> AStar::Find(PathNode *start, PathNode *end)
+Path* AStar::Find(PathNode *start, PathNode *end)
 {
     Initialize(start, end);
 
@@ -40,9 +41,24 @@ list<PathNode*> AStar::Find(PathNode *start, PathNode *end)
             break;
         }
     }
+		
+	if (!success) {
+		return NULL;
+	}
+
+	// Generate the path by stepping backwards
+	list<PathNode*> nodes;
+	while (node->GetParent()) {
+		nodes.push_front(node->PNode());
+		node = node->GetParent();
+	}
+	nodes.push_front(start);
 
     CleanUp();
-    return list<PathNode*>();
+
+	Path *path = new Path(_world);
+	path->SetNodes(nodes);
+	return path;
 }
 
 
@@ -119,6 +135,11 @@ void AStarNode::SetParent(AStarNode *parent)
 {
     _parent = parent;
     _g = _parent->_g + 1;
+}
+
+AStarNode* AStarNode::GetParent() 
+{
+	return _parent;
 }
 
 
