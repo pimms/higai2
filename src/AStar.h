@@ -35,8 +35,13 @@ private:
     void CleanUp();
 
     AStarNode* GetNode(PathNode*);
+	Path* CreatePath(AStarNode *goal);
 
-    void AddToOpen(AStarNode *node);
+	void CloseNode(AStarNode *node);
+	void RemoveFromOpen(AStarNode *node);
+	bool IsExpanded(AStarNode *node);
+	bool IsClosed(AStarNode *node);
+    void ExpandChildren(AStarNode *node);
 
     map<PathNode*,AStarNode*> _nmap;
     PathNode *_target;

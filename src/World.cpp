@@ -44,7 +44,7 @@ Vec World::GetSize()
 PathNode* World::GetNode(int x, int y)
 {
     if (x < 0 || y < 0 || x >= _nodes.size() || y >= _nodes[x].size()) {
-        throw "Invalid dimensions given to World::GetNode()";
+		return NULL;
     }
 
     return _nodes[x][y];

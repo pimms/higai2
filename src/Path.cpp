@@ -14,9 +14,9 @@ void Path::SetNodes(list<PathNode*> nodes)
 {
 	_nodes = nodes;
 
-	PathAnalyzer path(_world);
+	//PathAnalyzer path(_world);
 	_optimized = _nodes;
-	path.OptimizePath(_optimized);
+	//path.OptimizePath(_optimized);
 }
 
 const list<PathNode*>& Path::GetNodes() const 
