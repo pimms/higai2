@@ -16,6 +16,7 @@ using std::list;
 class Window;
 class PathNode;
 class World;
+class Path;
 
 
 class Renderer
@@ -24,6 +25,7 @@ public:
     Renderer(Window *Window);
 
     void DrawWorld(World *world);
+	void DrawPath(World*, Path*);
     void DrawPath(World*, const list<PathNode*>&, Color=Color(0,0,0));
 
 private:

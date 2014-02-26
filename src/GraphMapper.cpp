@@ -1,6 +1,9 @@
 #include "GraphMapper.h"
 #include "World.h"
 #include "PathNode.h"
+#include "Path.h"
+#include "AStar.h"
+
 
 const char *GRAPH_MAPPER_HELP = 
 	"You can interact with the world in many different ways.\n"
@@ -16,11 +19,18 @@ const char *GRAPH_MAPPER_HELP =
 GraphMapper::GraphMapper(World *world, Window *window)
 	: 	_world(world),
 		_window(window),
-		_state(NONE)
+		_state(NONE),
+		_path(NULL)
 {
 	printf("%s", GRAPH_MAPPER_HELP);
 }
 
+GraphMapper::~GraphMapper()
+{
+	if (_path) {
+		delete _path;
+	}
+}
 
 void GraphMapper::OnMouseClick(Vec pos) 
 {
@@ -46,6 +56,12 @@ void GraphMapper::OnKeyDown(int key)
 			}
 			break;
 	}
+}
+
+
+const Path* GraphMapper::GetPath() const
+{
+	return _path;
 }
 
 
@@ -76,7 +92,8 @@ GraphMapper::ActionResult GraphMapper::PerformAction(PathNode *node1,
 			printf("No state. See the help output.\n");
 			return ACTION_FAILURE;	
 		case PATHFIND:
-			printf("Pathfind yolo\n");
+			AStar astar(_world);
+			SetNewPath(astar.Find(node1, node2));
 			break;
 	}
 
@@ -91,4 +108,14 @@ PathNode* GraphMapper::GetNodeAtPixel(int x, int y)
 	Vec idx(x / (res.x / count.x),
 			y / (res.y / count.y));
 	return _world->GetNode(idx.x, idx.y);
+}
+
+
+void GraphMapper::SetNewPath(Path *path)
+{
+	if (_path) {
+		delete _path;
+	}
+
+	_path = path;
 }

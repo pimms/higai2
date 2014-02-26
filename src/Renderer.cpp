@@ -2,6 +2,7 @@
 #include "World.h"
 #include "Window.h"
 #include "PathNode.h"
+#include "Path.h"
 
 #include <map>
 #include <queue>
@@ -31,6 +32,12 @@ void Renderer::DrawWorld(World *world)
     }
 
     _window->PresentRenderer();
+}
+
+void Renderer::DrawPath(World *world, Path *path)
+{
+	DrawPath(world, path->GetNodes(), Color(255, 0, 0, 255));
+	DrawPath(world, path->GetOptimized(), Color(0, 255, 0, 255));
 }
 
 void Renderer::DrawPath(World *world, const list<PathNode*> &path,
