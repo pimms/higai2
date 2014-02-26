@@ -6,6 +6,9 @@ file(GLOB ai2_SRC
 	"src/*.cpp"
 )
 
+# This may not work for VS. Fuck the police.
+SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+
 if (WIN32)
 	LINK_DIRECTORIES(C:/lib/SDL2/lib/x86)
 	INCLUDE_DIRECTORIES(C:/lib/SDL2/include)

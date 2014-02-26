@@ -66,6 +66,8 @@ public:
 
     PathNode* PNode();
 
+	void PrintInfo() const;
+
 protected:
     PathNode *_pnode;
     AStarNode *_parent;

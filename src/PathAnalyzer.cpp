@@ -16,23 +16,29 @@ PathAnalyzer::PathAnalyzer(World *world)
 
 bool PathAnalyzer::OptimizePath(list<PathNode*> &path)
 {
-    /* Start is the start of the current mid. Mid is the node
-     * that may be optimized out. End is the end of the mid. */
-    list<PathNode*>::iterator start, mid, end;
+    list<PathNode*>::iterator start, end;
     bool opt = false;
+	
+	auto createits = [](list<PathNode*> l,
+						list<PathNode*>::iterator &st,
+						list<PathNode*>::iterator &ed) -> bool {
+		ed = st;
+		if (ed == l.end()) return false;
+		ed++; if (ed == l.end()) return false;
+		return true;
+	};
+
 
     start = path.begin();
-    while (GetIterators(start, mid, end)) {
-        int skips = 0;
-        while (IsClearLineOfSight(*start, *end)) {
-            mid = path.erase(mid);
-            skips++;
-            end++;
-            opt = true;
-        }
+	while (createits(path, start, end)) {
+		while (IsClearLineOfSight(*start, *end)) {
+			end++;	
+		}
 
-        start = end;
-    }
+		// remove everything between start and end
+
+		start++;
+	}
 
     return opt;
 }
@@ -63,29 +69,6 @@ bool PathAnalyzer::IsClearLineOfSight(PathNode *start, PathNode *end)
 }
 
 /***** Private Methods *****/
-bool PathAnalyzer::GetIterators(const list<PathNode*>::iterator &context,
-                                 list<PathNode*>::iterator &mid,
-                                 list<PathNode*>::iterator &end)
-{
-    if (!*context) {
-        return false;
-    }
-
-    mid = context;
-    mid++;
-    if (!*mid) {
-        return false;
-    }
-
-    end = mid;
-    end++;
-    if (!*end) {
-        return false;
-    }
-
-    return true;
-}
-
 void PathAnalyzer::GetIntersectionTestArea(PathNode *start, PathNode *end,
         Vec &tl, Vec &br)
 {

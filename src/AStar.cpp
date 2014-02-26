@@ -28,8 +28,8 @@ Path* AStar::Find(PathNode *start, PathNode *end)
 
     while (_open.size() > 0) {
         node = _open[0];
-        for (int i = 1; i < _open.size(); ++i) {
-            if (node->F() < _open[i]->F()) {
+        for (int i=1; i<_open.size(); i++) {
+            if (_open[i]->F() < node->F()) {
                 node = _open[i];
             }
         }
@@ -224,4 +224,12 @@ AStarNode* AStarNode::GetParent()
 PathNode* AStarNode::PNode()
 {
     return _pnode;
+}
+
+
+void AStarNode::PrintInfo() const 
+{
+	Vec pos = _pnode->GetPosition();
+	printf("pos[%i,%i] - F() = g%i + h%i\n",
+			pos.x, pos.y, _g, _h);
 }

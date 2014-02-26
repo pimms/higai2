@@ -23,14 +23,6 @@ public:
 private:
     World *_world;
 
-    /* Assigns path to "context+1" and end to "context+2" if
-     * possible. If it is not possible, false is returne and the
-     * contents of the iterators must be considered to be undefined.
-     */
-    bool GetIterators(const list<PathNode*>::iterator &context,
-                      list<PathNode*>::iterator &mid,
-                      list<PathNode*>::iterator &end);
-
     void GetIntersectionTestArea(PathNode *start, PathNode *end, 
 								Vec &tl, Vec &br);
     void GetPathLine(PathNode *start, PathNode *end, Vec &p1, Vec &p2);
