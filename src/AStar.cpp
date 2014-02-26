@@ -98,7 +98,27 @@ AStarNode* AStar::GetNode(PathNode *pathnode)
 
 void AStar::AddToOpen(AStarNode *node)
 {
-	printf("TODO: Add neighbours\n");
+	Vec dirs[4] = {
+		Vec(-1, 0), Vec(1, 0),
+		Vec(0, -1), Vec(0, 1),
+	};
+
+	for (int i=0; i<4; i++) {
+		PathNode *nb;
+
+		Vec p = node->PNode()->GetPosition();
+		p.x += dirs[i].x;
+		p.y += dirs[i].y;
+
+		nb = _world->GetNode(p);
+		if (nb) {
+			if (nb->GetType() == PathNode::WALKABLE) {
+				AStarNode *asnb = GetNode(nb);
+				_open.push_back(asnb);
+				asnb->SetParent(node);
+			}
+		}
+	}
 }
 
 

@@ -3,6 +3,7 @@
 #include "Renderer.h"
 #include "PathNode.h"
 #include "GraphMapper.h"
+#include "Path.h"
 #include <string>
 
 void InitializeWorld(World *world)
@@ -42,6 +43,12 @@ int ai_main(int argc, char *argv[])
     while (window.ShouldQuit() == false) {
         window.HandleEvents();
         renderer.DrawWorld(&world);
+	
+		const Path *path = mapper.GetPath();
+		if (path) {
+			renderer.DrawPath(&world, path);
+		}
+	
 		SDL_Delay(50);
     }
 

@@ -34,7 +34,7 @@ void Renderer::DrawWorld(World *world)
     _window->PresentRenderer();
 }
 
-void Renderer::DrawPath(World *world, Path *path)
+void Renderer::DrawPath(World *world, const Path *path)
 {
 	DrawPath(world, path->GetNodes(), Color(255, 0, 0, 255));
 	DrawPath(world, path->GetOptimized(), Color(0, 255, 0, 255));
