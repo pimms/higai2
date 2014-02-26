@@ -32,14 +32,8 @@ public:
     Type GetType() const;
     void SetType(Type type);
 
-    bool AddNeighbour(World *world, PathNode *node);
-	bool RemoveNeighbour(PathNode *node);
-	bool IsNeighbour(PathNode *node);
-    const list<PathNode*>& GetNeighbours() const;
-
 private:
     Type _type;
-    list<PathNode*> _neighbours;
 
     int _x;
     int _y;

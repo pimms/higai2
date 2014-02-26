@@ -34,8 +34,6 @@ private:
 
 	enum State {
 		NONE, 				// Default
-		WAYPOINT_SET, 		// W
-		WAYPOINT_REMOVE, 	// R
 		PATHFIND, 			// P
 	};
 	State _state;

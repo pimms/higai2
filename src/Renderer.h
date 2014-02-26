@@ -27,7 +27,6 @@ public:
     void DrawPath(World*, const list<PathNode*>&, Color=Color(0,0,0));
 
 private:
-	void DrawWaypointGraph(World *world);
     void DrawPathNode(World *world, PathNode *node);
 
     void SetRenderColor(PathNode *node);

@@ -31,7 +31,8 @@ private:
                       list<PathNode*>::iterator &mid,
                       list<PathNode*>::iterator &end);
 
-    void GetIntersectionTestArea(PathNode *start, PathNode *end, Vec &tl, Vec &br);
+    void GetIntersectionTestArea(PathNode *start, PathNode *end, 
+								Vec &tl, Vec &br);
     void GetPathLine(PathNode *start, PathNode *end, Vec &p1, Vec &p2);
 
     /* Checks for intersection between the line starting at lp1 and ending

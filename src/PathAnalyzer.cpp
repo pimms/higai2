@@ -6,7 +6,7 @@ using std::min;
 #include "PathNode.h"
 #include "World.h"
 
-
+// Some serious construction up in this hizhaz
 PathAnalyzer::PathAnalyzer(World *world)
     :	_world(world)
 {

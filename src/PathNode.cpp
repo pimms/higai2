@@ -16,11 +16,6 @@ PathNode::~PathNode()
 
 }
 
-struct nodeValue {
-    int g;
-    int h;
-};
-
 void PathNode::GetPosition(int *x, int *y) const
 {
     *x = _x;
@@ -29,7 +24,7 @@ void PathNode::GetPosition(int *x, int *y) const
 
 Vec PathNode::GetPosition() const
 {
-    return VecI(_x, _y);
+    return Vec(_x, _y);
 }
 
 
@@ -64,61 +59,3 @@ void PathNode::SetType(PathNode::Type type)
     _type = type;
 }
 
-
-bool PathNode::AddNeighbour(World *world, PathNode *node)
-{
-	bool success = false;
-
-	PathAnalyzer analyzer(world);
-	if (!analyzer.IsClearLineOfSight(this, node)) {
-		return false;
-	}
-
-	if (this == node) {
-		return false;
-	}
-
-	if (!IsNeighbour(node)) {
-    	_neighbours.push_back(node);
-		success = true;
-	}
-
-	if (!node->IsNeighbour(this)) {
-		node->_neighbours.push_back(this);
-		success = true;
-	}
-
-	return success;
-}
-
-bool PathNode::RemoveNeighbour(PathNode *node)
-{
-	if (IsNeighbour(node)) {
-		_neighbours.remove(node);
-
-		if (node->IsNeighbour(this)) {
-			node->_neighbours.remove(this);
-		}
-
-		return true;
-	}
-
-	return false;
-}
-
-bool PathNode::IsNeighbour(PathNode *node) 
-{
-	list<PathNode*>::iterator it;
-	for (it=_neighbours.begin(); it!=_neighbours.end(); it++) {
-		if (*it == node) {
-			return true;
-		}
-	}
-
-	return false;
-}
-
-const list<PathNode*>& PathNode::GetNeighbours() const
-{
-    return _neighbours;
-}

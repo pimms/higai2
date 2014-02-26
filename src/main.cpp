@@ -15,20 +15,6 @@ void InitializeWorld(World *world)
             world->GetNode(x, y)->SetType(PathNode::WALL);
         }
     }
-
-	PathNode *nodes[4];
-	nodes[0] = world->GetNode(0, 0);
-	nodes[1] = world->GetNode(19, 1);
-	nodes[2] = world->GetNode(18, 19);
-	nodes[3] = world->GetNode(0, 19);
-
-	for (int i=0; i<4; i++) {
-		for (int j=0; j<4; j++) {
-			if (j!=i) {
-				nodes[i]->AddNeighbour(world, nodes[j]);
-			}
-		}
-	}
 }
 
 

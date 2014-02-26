@@ -30,8 +30,6 @@ void Renderer::DrawWorld(World *world)
         }
     }
 
-	DrawWaypointGraph(world);
-
     _window->PresentRenderer();
 }
 
@@ -63,35 +61,6 @@ void Renderer::DrawPath(World *world, const list<PathNode*> &path,
 
 
 /**** Private Methods *****/
-void Renderer::DrawWaypointGraph(World *world) 
-{
-	Vec size = world->GetSize();
-	map<PathNode*,bool> drawn;
-
-	SDL_SetRenderDrawColor(_window->GetRenderer(), 255, 0, 0, 255);
-
-	for (int x=0; x<size.x; x++) {
-		for (int y=0; y<size.y; y++) {
-			PathNode *node = world->GetNode(x, y);
-			Vec ptA = GetTileCoordinate(world, node, true);
-
-			const list<PathNode*> neighbours = node->GetNeighbours();
-			 list<PathNode*>::const_iterator it = neighbours.begin();
-			
-			// Draw lines to all neighbours
-			while (it != neighbours.end()) {
-				Vec ptB = GetTileCoordinate(world, *it, true);
-				SDL_RenderDrawLine(_window->GetRenderer(),
-						ptA.x, ptA.y, ptB.x, ptB.y);
-				drawn[*it] = true;
-				it++;
-			}
-		}
-	}
-
-	SDL_SetRenderDrawColor(_window->GetRenderer(), 0, 0, 0, 255);
-}
-
 void Renderer::DrawPathNode(World *world, PathNode *node)
 {
 
