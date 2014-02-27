@@ -5,14 +5,16 @@
 #include "AStar.h"
 
 
-const char *GRAPH_MAPPER_HELP = 
-	"You can interact with the world in many different ways.\n"
-	"Change between states by clicking their respective toggle-keys.\n"
-	"The states alter how clicks on tiles are interpreted.\n"
-	"\nStates:\n"
-	"\t(p) PATHFIND\n"
-	"\t\tClicks on two nodes will, if possible, find the shortest\n"
-	"\t\tpath between those nodes.\n";
+const char *GRAPH_MAPPER_HELP =
+		"You can interact with the world in many different ways.\n"
+		"Change between states by clicking their respective toggle-keys.\n"
+		"The states alter how clicks on tiles are interpreted.\n"
+		"\nStates:\n"
+		"\t(p) PATHFIND\n"
+		"\t\tClicks on two nodes will, if possible, find the shortest\n"
+		"\t\tpath between those nodes.\n"
+
+		"\n";
 
 
 
@@ -48,13 +50,17 @@ void GraphMapper::OnMouseClick(Vec pos)
 
 void GraphMapper::OnKeyDown(int key) 
 {
+	State nstate = NONE;
+
 	switch (key) {
 		case 'p':
-			if (_state != PATHFIND) {
-				_state = PATHFIND;
-				OnStateChanged();
-			}
+			nstate = PATHFIND;
 			break;
+	}
+
+	if (_state != nstate) {
+		_state = nstate;
+		OnStateChanged();
 	}
 }
 
@@ -94,6 +100,7 @@ GraphMapper::ActionResult GraphMapper::PerformAction(PathNode *node1,
 		case PATHFIND:
 			AStar astar(_world);
 			SetNewPath(astar.Find(node1, node2));
+			return ACTION_SUCCESS;
 			break;
 	}
 

@@ -39,13 +39,22 @@ bool PathAnalyzer::OptimizePath(list<PathNode*> &path)
 			opt = true;
 			end = tail++;
 		}
+
+		int numopt = 0;
 	
 		list<PathNode*>::iterator it = start;
 		for (it++; it != end; ) {
 			it = path.erase(it);
+			numopt++;
 		}
+		
+		printf("NUMOPT(%i)  ", numopt);
 
 		start = end;
+	}
+
+	if (opt) {
+		printf("\n");
 	}
 
     return opt;
@@ -58,8 +67,8 @@ bool PathAnalyzer::IsClearLineOfSight(PathNode *start, PathNode *end)
     GetIntersectionTestArea(start, end, tl, br);
     GetPathLine(start, end, lineP1, lineP2);
 
-    for (int x = tl.x; x < br.x; x++) {
-        for (int y = tl.y; y < br.y; y++) {
+    for (int x = tl.x; x <= br.x; x++) {
+        for (int y = tl.y; y <= br.y; y++) {
             PathNode *node = _world->GetNode(x, y);
             if (node->GetType() != PathNode::WALKABLE) {
                 Vec rtl, rbr;

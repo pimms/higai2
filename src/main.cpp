@@ -13,7 +13,7 @@ void InitializeWorld(World *world)
 
     for (int x=2; x < sx-2; x++) {
         for (int y=2; y<sy-2; y++) {
-			if ((x)%3 != 0) {
+			if ((rand())%8 <= 2) {
             	world->GetNode(x, y)->SetType(PathNode::WALL);
 			}
         }
