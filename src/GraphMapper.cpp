@@ -89,6 +89,9 @@ void GraphMapper::OnStateChanged()
 		case PATHFIND:
 			strcpy(state, "PATHFIND");
 			break;
+		case ADD_WALL:
+			strcpy(state, "ADD_WALL");
+			break;
 		case NONE:
 			strcpy(state, "NONE");
 			break;

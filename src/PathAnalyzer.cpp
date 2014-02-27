@@ -34,27 +34,21 @@ bool PathAnalyzer::OptimizePath(list<PathNode*> &path)
 	while (createits(path, start, tail)) {
 		end = tail;
 
+		// Move the "end" iterator to the last visible tile
+		// from "start" 
 		while (tail != path.end() 
 				&& IsClearLineOfSight(*start, *tail)) {
 			opt = true;
 			end = tail++;
 		}
 
-		int numopt = 0;
-	
+		// Remove everything between start and end
 		list<PathNode*>::iterator it = start;
 		for (it++; it != end; ) {
 			it = path.erase(it);
-			numopt++;
 		}
-		
-		printf("NUMOPT(%i)  ", numopt);
 
-		start = end;
-	}
-
-	if (opt) {
-		printf("\n");
+		start++;
 	}
 
     return opt;
