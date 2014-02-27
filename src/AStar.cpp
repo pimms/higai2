@@ -20,7 +20,6 @@ AStar::~AStar()
 Path* AStar::Find(PathNode *start, PathNode *end)
 {
     Initialize(start, end);
-	printf("Attempting to pathfind... \n");
 
     bool success = false;
     AStarNode *node = GetNode(start);
@@ -47,9 +46,6 @@ Path* AStar::Find(PathNode *start, PathNode *end)
 		printf("No path available\n");
 		return NULL;
 	}
-
-	printf("huge success!\n");
-    
 
 	Path *path = CreatePath(node);
 	CleanUp();
