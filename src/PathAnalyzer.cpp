@@ -100,92 +100,59 @@ void PathAnalyzer::GetPathLine(PathNode *start, PathNode *end,
 
 bool PathAnalyzer::LineIntersects(Vec lp1, Vec lp2, Vec rTL, Vec rBR)
 {
-	return SegmentIntersectRectangle(
-			rTL.x, rTL.y, rBR.x, rBR.y,
-			lp1.x, lp1.y, lp2.x, lp2.y
-	);
+	return LineIntersectsRect(lp1, lp2, rTL, rBR);
 }
 
 
 
 /* Line Intersection Algorithm
- * Code taken from:	http://stackoverflow.com/a/100165
+ * Code taken from:	http://stackoverflow.com/q/5514366
  */
-bool SegmentIntersectRectangle(double a_rectangleMinX,
-                               double a_rectangleMinY,
-                               double a_rectangleMaxX,
-                               double a_rectangleMaxY,
-                               double a_p1x,
-                               double a_p1y,
-                               double a_p2x,
-                               double a_p2y)
+bool LineIntersectsRect(Vec p1, Vec p2, Vec topLeft, Vec botRight)
 {
-    // Find min and max X for the segment
+	// If p1 or p2 is contained in the rectangle, they intersect 
+	if (p1.x > topLeft.x && p1.x < botRight.x &&
+		p1.y > topLeft.y && p1.y < botRight.y) {
+		return true;
+	}
 
-    double minX = a_p1x;
-    double maxX = a_p2x;
+	if (p2.x > topLeft.x && p2.x < botRight.x &&
+		p2.y > topLeft.y && p2.y < botRight.y) {
+		return true;
+	}
 
-    if(a_p1x > a_p2x)
-    {
-      minX = a_p2x;
-      maxX = a_p1x;
-    }
+	// If the line intersects any of the four lines in the
+	// rectangle, an intersection is happening.
+	Vec l = topLeft;
+	Vec r = botRight;
+	return ( 
+		LineIntersectsLine(p1, p2, Vec(l.x, l.y), Vec(r.x, l.y)) ||
+		LineIntersectsLine(p1, p2, Vec(l.x, l.y), Vec(l.x, r.y)) ||
+		LineIntersectsLine(p1, p2, Vec(r.x, r.y), Vec(r.x, l.y)) ||
+		LineIntersectsLine(p1, p2, Vec(r.x, r.y), Vec(l.x, r.y))
+	);	
+}
 
-    // Find the intersection of the segment's and rectangle's x-projections
+bool LineIntersectsLine(Vec l1p1, Vec l1p2, Vec l2p1, Vec l2p2)
+{
+	float q = (l1p1.y-l2p1.y)*(l2p2.x-l2p1.x)
+			 -(l1p1.x-l2p1.x)*(l2p2.y-l2p1.y);
+	float d = (l1p2.x-l1p1.x)*(l2p2.y-l2p1.y)
+			 -(l1p2.y-l1p1.y)*(l2p2.x-l2p1.x);
 
-    if(maxX > a_rectangleMaxX)
-    {
-      maxX = a_rectangleMaxX;
-    }
+	if( d == 0 ) {
+		return false;
+	}
 
-    if(minX < a_rectangleMinX)
-    {
-      minX = a_rectangleMinX;
-    }
+	float r = q / d;
 
-    if(minX > maxX) // If their projections do not intersect return false
-    {
-      return false;
-    }
+	q = (l1p1.y - l2p1.y)*(l1p2.x-l1p1.x)
+	   -(l1p1.x-l2p1.x)*(l1p2.y-l1p1.y);
+	float s = q / d;
 
-    // Find corresponding min and max Y for min and max X we found before
+	if (r < 0 || r > 1 || s < 0 || s > 1) {
+		return false;
+	}
 
-    double minY = a_p1y;
-    double maxY = a_p2y;
-
-    double dx = a_p2x - a_p1x;
-
-    if(abs(dx) > 0.0000001)
-    {
-      double a = (a_p2y - a_p1y) / dx;
-      double b = a_p1y - a * a_p1x;
-      minY = a * minX + b;
-      maxY = a * maxX + b;
-    }
-
-    if(minY > maxY)
-    {
-      double tmp = maxY;
-      maxY = minY;
-      minY = tmp;
-    }
-
-    // Find the intersection of the segment's and rectangle's y-projections
-
-    if(maxY > a_rectangleMaxY)
-    {
-      maxY = a_rectangleMaxY;
-    }
-
-    if(minY < a_rectangleMinY)
-    {
-      minY = a_rectangleMinY;
-    }
-
-    if(minY > maxY) // If Y-projections do not intersect return false
-    {
-      return false;
-    }
-
-    return true;
+	return true;
 }

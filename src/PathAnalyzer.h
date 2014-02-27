@@ -39,12 +39,5 @@ private:
     bool LineIntersects(Vec lp1, Vec lp2, Vec rTL, Vec rBR);
 };
 
-
-bool SegmentIntersectRectangle(double a_rectangleMinX,
-                               double a_rectangleMinY,
-                               double a_rectangleMaxX,
-                               double a_rectangleMaxY,
-                               double a_p1x,
-                               double a_p1y,
-                               double a_p2x,
-                               double a_p2y);
+bool LineIntersectsRect(Vec p1, Vec p2, Vec topLeft, Vec botRight);
+bool LineIntersectsLine(Vec l1p1, Vec l1p2, Vec l2p1, Vec l2p2);
