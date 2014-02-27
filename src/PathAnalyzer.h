@@ -32,6 +32,12 @@ private:
     void GetIntersectionTestArea(PathNode *start, PathNode *end, 
 								VecF &tl, VecF &br);
     void GetPathLine(PathNode *start, PathNode *end, VecF &p1, VecF &p2);
+	
+	/* Are all the nodes on the path-segment between "start" and
+	 * "end" on a straight line with no tunrns?
+	 */
+	bool IsSegmentOneDimensional(const list<PathNode*>::iterator &start,
+								 const list<PathNode*>::iterator &end);
 
     /* Checks for intersection between the line starting at lp1 and ending
      * at lp2 going through the rectangle {rTL, rBR}.

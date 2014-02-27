@@ -41,11 +41,15 @@ bool PathAnalyzer::OptimizePath(list<PathNode*> &path)
 			opt = true;
 			end = tail++;
 		}
-
-		// Remove everything between start and end
-		list<PathNode*>::iterator it = start;
-		for (it++; it != end; ) {
-			it = path.erase(it);
+		
+		// Do NOT shorten the path if the segment only moves
+		// along one axes.
+		if (!IsSegmentOneDimensional(start, end)) {
+			// Remove everything between start and end
+			list<PathNode*>::iterator it = start;
+			for (it++; it != end; ) {
+				it = path.erase(it);
+			}
 		}
 
 		start++;
@@ -103,6 +107,37 @@ void PathAnalyzer::GetPathLine(PathNode *start, PathNode *end,
 	p1.y += 0.5f;
 	p2.x += 0.5f;
 	p2.y += 0.5f;
+}
+
+
+bool PathAnalyzer::IsSegmentOneDimensional(
+			const list<PathNode*>::iterator &start,
+			const list<PathNode*>::iterator &end)
+{
+	int relX = 0;
+	int relY = 0;
+
+	list<PathNode*>::iterator it = start;
+
+	while (it != end && std::next(it) != end) {
+		list<PathNode*>::iterator next = std::next(it);
+
+		Vec p1 = (*it)->GetPosition();
+		Vec p2 = (*next)->GetPosition();
+		it++;
+		
+		if (p1.x == p2.x) {
+			relX++;
+		}
+
+		if (p1.y == p2.y) {
+			relY++;
+		}
+	}
+
+	// The path is one-dimensional if one of the axes 
+	// didn't move at all.
+	return !relX || !relY;
 }
 
 
