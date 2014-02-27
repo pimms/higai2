@@ -30,14 +30,14 @@ private:
     World *_world;
 
     void GetIntersectionTestArea(PathNode *start, PathNode *end, 
-								Vec &tl, Vec &br);
-    void GetPathLine(PathNode *start, PathNode *end, Vec &p1, Vec &p2);
+								VecF &tl, VecF &br);
+    void GetPathLine(PathNode *start, PathNode *end, VecF &p1, VecF &p2);
 
     /* Checks for intersection between the line starting at lp1 and ending
      * at lp2 going through the rectangle {rTL, rBR}.
      */
-    bool LineIntersects(Vec lp1, Vec lp2, Vec rTL, Vec rBR);
+    bool LineIntersects(VecF lp1, VecF lp2, VecF rTL, VecF rBR);
 };
 
-bool LineIntersectsRect(Vec p1, Vec p2, Vec topLeft, Vec botRight);
-bool LineIntersectsLine(Vec l1p1, Vec l1p2, Vec l2p1, Vec l2p2);
+bool LineIntersectsRect(VecF p1, VecF p2, VecF topLeft, VecF botRight);
+bool LineIntersectsLine(VecF l1p1, VecF l1p2, VecF l2p1, VecF l2p2);

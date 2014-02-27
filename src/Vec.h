@@ -19,6 +19,16 @@ public:
         x = px;
         y = py;
     }
+
+	void operator=(const Vec_t<float> &vf) {
+		x = (T)vf.x;
+		y = (T)vf.y;
+	}
+
+	void operator=(const Vec_t<int> &vf) {
+		x = (T)vf.x;
+		y = (T)vf.y;
+	}
 };
 
 

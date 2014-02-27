@@ -63,7 +63,7 @@ bool PathAnalyzer::OptimizePath(list<PathNode*> &path)
 
 bool PathAnalyzer::IsClearLineOfSight(PathNode *start, PathNode *end)
 {
-    Vec tl, br, lineP1, lineP2;
+    VecF tl, br, lineP1, lineP2;
     GetIntersectionTestArea(start, end, tl, br);
     GetPathLine(start, end, lineP1, lineP2);
 
@@ -71,9 +71,9 @@ bool PathAnalyzer::IsClearLineOfSight(PathNode *start, PathNode *end)
         for (int y = tl.y; y <= br.y; y++) {
             PathNode *node = _world->GetNode(x, y);
             if (node->GetType() != PathNode::WALKABLE) {
-                Vec rtl, rbr;
+                VecF rtl, rbr;
                 rtl = node->GetPosition();
-                rbr = Vec(rtl.x+1, rtl.y+1);
+                rbr = VecF(rtl.x+1, rtl.y+1);
 
                 if (LineIntersects(lineP1, lineP2, rtl, rbr)) {
                     return false;
@@ -87,7 +87,7 @@ bool PathAnalyzer::IsClearLineOfSight(PathNode *start, PathNode *end)
 
 /***** Private Methods *****/
 void PathAnalyzer::GetIntersectionTestArea(PathNode *start, PathNode *end,
-        Vec &tl, Vec &br)
+        VecF &tl, VecF &br)
 {
     int sx, sy, ex, ey;
     start->GetPosition(&sx, &sy);
@@ -100,14 +100,19 @@ void PathAnalyzer::GetIntersectionTestArea(PathNode *start, PathNode *end,
 }
 
 void PathAnalyzer::GetPathLine(PathNode *start, PathNode *end,
-                                Vec &p1, Vec &p2)
+                                VecF &p1, VecF &p2)
 {
     p1 = start->GetPosition();
     p2 = end->GetPosition();
+
+	p1.x += 0.5f;
+	p1.y += 0.5f;
+	p2.x += 0.5f;
+	p2.y += 0.5f;
 }
 
 
-bool PathAnalyzer::LineIntersects(Vec lp1, Vec lp2, Vec rTL, Vec rBR)
+bool PathAnalyzer::LineIntersects(VecF lp1, VecF lp2, VecF rTL, VecF rBR)
 {
 	return LineIntersectsRect(lp1, lp2, rTL, rBR);
 }
@@ -117,7 +122,7 @@ bool PathAnalyzer::LineIntersects(Vec lp1, Vec lp2, Vec rTL, Vec rBR)
 /* Line Intersection Algorithm
  * Code taken from:	http://stackoverflow.com/q/5514366
  */
-bool LineIntersectsRect(Vec p1, Vec p2, Vec topLeft, Vec botRight)
+bool LineIntersectsRect(VecF p1, VecF p2, VecF topLeft, VecF botRight)
 {
 	// If p1 or p2 is contained in the rectangle, they intersect 
 	if (p1.x > topLeft.x && p1.x < botRight.x &&
@@ -132,17 +137,17 @@ bool LineIntersectsRect(Vec p1, Vec p2, Vec topLeft, Vec botRight)
 
 	// If the line intersects any of the four lines in the
 	// rectangle, an intersection is happening.
-	Vec l = topLeft;
-	Vec r = botRight;
+	VecF l = topLeft;
+	VecF r = botRight;
 	return ( 
-		LineIntersectsLine(p1, p2, Vec(l.x, l.y), Vec(r.x, l.y)) ||
-		LineIntersectsLine(p1, p2, Vec(l.x, l.y), Vec(l.x, r.y)) ||
-		LineIntersectsLine(p1, p2, Vec(r.x, r.y), Vec(r.x, l.y)) ||
-		LineIntersectsLine(p1, p2, Vec(r.x, r.y), Vec(l.x, r.y))
+		LineIntersectsLine(p1, p2, VecF(l.x, l.y), VecF(r.x, l.y)) ||
+		LineIntersectsLine(p1, p2, VecF(l.x, l.y), VecF(l.x, r.y)) ||
+		LineIntersectsLine(p1, p2, VecF(r.x, r.y), VecF(r.x, l.y)) ||
+		LineIntersectsLine(p1, p2, VecF(r.x, r.y), VecF(l.x, r.y))
 	);	
 }
 
-bool LineIntersectsLine(Vec l1p1, Vec l1p2, Vec l2p1, Vec l2p2)
+bool LineIntersectsLine(VecF l1p1, VecF l1p2, VecF l2p1, VecF l2p2)
 {
 	float q = (l1p1.y-l2p1.y)*(l2p2.x-l2p1.x)
 			 -(l1p1.x-l2p1.x)*(l2p2.y-l2p1.y);
