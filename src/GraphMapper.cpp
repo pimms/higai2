@@ -94,6 +94,7 @@ GraphMapper::ActionResult GraphMapper::PerformAction(PathNode *node1,
 		case PATHFIND:
 			AStar astar(_world);
 			SetNewPath(astar.Find(node1, node2));
+			return ACTION_SUCCESS;
 			break;
 	}
 
