@@ -13,7 +13,9 @@ void InitializeWorld(World *world)
 
     for (int x=2; x < sx-2; x++) {
         for (int y=2; y<sy-2; y++) {
-            world->GetNode(x, y)->SetType(PathNode::WALL);
+			if ((x)%3 != 0) {
+            	world->GetNode(x, y)->SetType(PathNode::WALL);
+			}
         }
     }
 }

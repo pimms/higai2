@@ -34,7 +34,8 @@ bool PathAnalyzer::OptimizePath(list<PathNode*> &path)
 	while (createits(path, start, tail)) {
 		end = tail;
 
-		while (IsClearLineOfSight(*start, *end) && tail != path.end()) {
+		while (tail != path.end() 
+				&& IsClearLineOfSight(*start, *tail)) {
 			end = tail;
 			tail++;
 		}
