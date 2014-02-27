@@ -39,13 +39,22 @@ bool PathAnalyzer::OptimizePath(list<PathNode*> &path)
 			opt = true;
 			end = tail++;
 		}
+
+		int numopt = 0;
 	
 		list<PathNode*>::iterator it = start;
 		for (it++; it != end; ) {
 			it = path.erase(it);
+			numopt++;
 		}
+		
+		printf("NUMOPT(%i)  ", numopt);
 
 		start = end;
+	}
+
+	if (opt) {
+		printf("\n");
 	}
 
     return opt;
