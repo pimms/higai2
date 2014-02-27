@@ -9,13 +9,19 @@ using std::list;
 class PathNode;
 class World;
 
-
+/* The path analyzer optimizes and proves analytical
+ * insight to a path in the node-grid.
+ */
 class PathAnalyzer
 {
 public:
     PathAnalyzer(World *world);
 
-    /* Returns true if any optimization was done. */
+    /* Returns true if any optimization was done. 
+	 * The optimization is done by incrementally remove any
+	 * redundant node B in the path "A-B-C" if there is a clear
+	 * sight between A and C. 
+	 */
     bool OptimizePath(list<PathNode*> &path);
 
     bool IsClearLineOfSight(PathNode *start, PathNode *b);

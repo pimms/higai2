@@ -36,16 +36,16 @@ bool PathAnalyzer::OptimizePath(list<PathNode*> &path)
 
 		while (tail != path.end() 
 				&& IsClearLineOfSight(*start, *tail)) {
-			end = tail;
-			tail++;
+			opt = true;
+			end = tail++;
 		}
-
+	
 		list<PathNode*>::iterator it = start;
 		for (it++; it != end; ) {
 			it = path.erase(it);
 		}
 
-		start++;
+		start = end;
 	}
 
     return opt;
