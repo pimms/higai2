@@ -58,8 +58,8 @@ bool PathAnalyzer::IsClearLineOfSight(PathNode *start, PathNode *end)
     GetIntersectionTestArea(start, end, tl, br);
     GetPathLine(start, end, lineP1, lineP2);
 
-    for (int x = tl.x; x < br.x; x++) {
-        for (int y = tl.y; y < br.y; y++) {
+    for (int x = tl.x; x <= br.x; x++) {
+        for (int y = tl.y; y <= br.y; y++) {
             PathNode *node = _world->GetNode(x, y);
             if (node->GetType() != PathNode::WALKABLE) {
                 Vec rtl, rbr;
