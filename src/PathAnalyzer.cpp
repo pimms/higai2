@@ -120,7 +120,7 @@ bool PathAnalyzer::LineIntersects(VecF lp1, VecF lp2, VecF rTL, VecF rBR)
 
 
 /* Line Intersection Algorithm
- * Code taken from:	http://stackoverflow.com/q/5514366
+ * Code based on:	http://stackoverflow.com/q/5514366
  */
 bool LineIntersectsRect(VecF p1, VecF p2, VecF topLeft, VecF botRight)
 {

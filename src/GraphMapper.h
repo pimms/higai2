@@ -26,6 +26,7 @@ private:
 	};
 
 	void OnStateChanged();
+	ActionResult PerformAction(PathNode *node);
 	ActionResult PerformAction(PathNode *node1, PathNode *node2);
 	
 	PathNode* GetNodeAtPixel(int x, int y);
@@ -42,6 +43,7 @@ private:
 	enum State {
 		NONE, 				// Default
 		PATHFIND, 			// P
+		ADD_WALL,			// W
 	};
 	State _state;
 	

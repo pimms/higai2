@@ -38,13 +38,17 @@ void GraphMapper::OnMouseClick(Vec pos)
 {
 	PathNode *node = GetNodeAtPixel(pos.x, pos.y);
 	if (!node) return;
-	
-	if (_lastNode) {
-		if (PerformAction(_lastNode, node) == ACTION_SUCCESS) {
-			_lastNode = NULL;
+
+	// Attempt to handle the current state as a one-node state.
+	if (!PerformAction(node)) {
+		// The state requires two nodes
+		if (_lastNode) {
+			if (PerformAction(_lastNode, node) == ACTION_SUCCESS) {
+				_lastNode = NULL;
+			}
+		} else {
+			_lastNode = node;
 		}
-	} else {
-		_lastNode = node;
 	}
 }
 
@@ -55,6 +59,9 @@ void GraphMapper::OnKeyDown(int key)
 	switch (key) {
 		case 'p':
 			nstate = PATHFIND;
+			break;
+		case 'w':
+			nstate = ADD_WALL;
 			break;
 	}
 
@@ -90,6 +97,26 @@ void GraphMapper::OnStateChanged()
 	printf("[%s]\n", state);
 }
 
+GraphMapper::ActionResult GraphMapper::PerformAction(PathNode *node) 
+{
+	switch (_state) {
+		case ADD_WALL:
+		{	
+			// Toggle the type of the node
+			PathNode::Type t = node->GetType();
+			t = (t==PathNode::WALL) 
+					? PathNode::WALKABLE 
+					: PathNode::WALL;
+			node->SetType(t);
+			return ACTION_SUCCESS;
+		}
+		default:
+			return ACTION_FAILURE;
+	}
+
+	return ACTION_FAILURE;
+}
+
 GraphMapper::ActionResult GraphMapper::PerformAction(PathNode *node1, 
 													PathNode *node2) 
 {
@@ -97,11 +124,14 @@ GraphMapper::ActionResult GraphMapper::PerformAction(PathNode *node1,
 		case NONE:
 			printf("No state. See the help output.\n");
 			return ACTION_FAILURE;	
-		case PATHFIND:
+		case PATHFIND: 
+		{
 			AStar astar(_world);
 			SetNewPath(astar.Find(node1, node2));
 			return ACTION_SUCCESS;
-			break;
+		}
+		case ADD_WALL:
+			return ACTION_FAILURE;
 	}
 
 	return ACTION_FAILURE;
