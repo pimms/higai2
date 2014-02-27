@@ -54,7 +54,9 @@ int ai_main(int argc, char *argv[])
     return 0;
 }
 
-
+#ifdef main
+#undef main
+#endif
 int main(int argc, char *argv[])
 {
     int ret = 0;

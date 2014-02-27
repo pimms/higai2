@@ -16,10 +16,10 @@ PathAnalyzer::PathAnalyzer(World *world)
 
 bool PathAnalyzer::OptimizePath(list<PathNode*> &path)
 {
-    list<PathNode*>::iterator start, end;
+    list<PathNode*>::iterator start, end, tail;
     bool opt = false;
 	
-	auto createits = [](list<PathNode*> l,
+	auto createits = [](const list<PathNode*> &l,
 						list<PathNode*>::iterator &st,
 						list<PathNode*>::iterator &ed) -> bool {
 		ed = st;
@@ -30,12 +30,19 @@ bool PathAnalyzer::OptimizePath(list<PathNode*> &path)
 
 
     start = path.begin();
-	while (createits(path, start, end)) {
-		while (IsClearLineOfSight(*start, *end)) {
-			end++;	
+	tail = path.begin();
+	while (createits(path, start, tail)) {
+		end = tail;
+
+		while (IsClearLineOfSight(*start, *end) && tail != path.end()) {
+			end = tail;
+			tail++;
 		}
 
-		// remove everything between start and end
+		list<PathNode*>::iterator it = start;
+		for (it++; it != end; ) {
+			it = path.erase(it);
+		}
 
 		start++;
 	}
