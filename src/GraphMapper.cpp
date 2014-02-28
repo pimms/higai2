@@ -34,6 +34,7 @@ GraphMapper::~GraphMapper()
 	}
 }
 
+
 void GraphMapper::OnMouseClick(Vec pos) 
 {
 	PathNode *node = GetNodeAtPixel(pos.x, pos.y);
