@@ -3,6 +3,7 @@
 #include "Vec.h"
 #include "World.h"
 #include "Path.h"
+#include "Timer.h"
 
 /***** AStar *****/
 AStar::AStar(World *world)
@@ -20,6 +21,8 @@ AStar::~AStar()
 Path* AStar::Find(PathNode *start, PathNode *end)
 {
     Initialize(start, end);
+	Timer time;
+	time.Start();
 
     bool success = false;
     AStarNode *node = GetNode(start);
@@ -41,11 +44,17 @@ Path* AStar::Find(PathNode *start, PathNode *end)
 		CloseNode(node);
         ExpandChildren(node);
     }
+
+	time.Stop();
 		
 	if (!success) {
-		printf("No path available\n");
+		printf("No path found (%0.5fs, %lu nodes searched)\n", 
+				time.Get(), _closed.size());
+		CleanUp();
 		return NULL;
 	}
+
+	printf("Path found in %0.5f s\n", time.Get());
 
 	Path *path = CreatePath(node);
 	CleanUp();

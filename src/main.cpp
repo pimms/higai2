@@ -20,11 +20,11 @@ void InitializeWorld(World *world)
     }
 }
 
-
+#define WORLD_SIZE 50
 int ai_main(int argc, char *argv[])
 {
 	// Initialize the world
-    World world(20, 20);
+    World world(WORLD_SIZE, WORLD_SIZE);
     InitializeWorld(&world);
 
 	// Initialize the window
