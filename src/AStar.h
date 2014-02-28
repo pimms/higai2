@@ -13,6 +13,7 @@ using std::map;
 class PathNode;
 class AStarNode;
 class Path;
+class Timer;
 
 /* AStar
  *
@@ -33,6 +34,8 @@ public:
 private:
     void Initialize(PathNode *start, PathNode *end);
     void CleanUp();
+
+	void PrintStatistics(Timer t, bool success) const;
 
     AStarNode* GetNode(PathNode*);
 	Path* CreatePath(AStarNode *goal);

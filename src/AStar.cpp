@@ -46,15 +46,12 @@ Path* AStar::Find(PathNode *start, PathNode *end)
     }
 
 	time.Stop();
+	PrintStatistics(time, success);
 		
 	if (!success) {
-		printf("No path found (%0.5fs, %lu nodes searched)\n", 
-				time.Get(), _closed.size());
 		CleanUp();
 		return NULL;
 	}
-
-	printf("Path found in %0.5f s\n", time.Get());
 
 	Path *path = CreatePath(node);
 	CleanUp();
@@ -81,6 +78,17 @@ void AStar::CleanUp()
     }
 
     _target = NULL;
+}
+
+
+void AStar::PrintStatistics(Timer t, bool success) const
+{
+	printf("Path%sfound:\n", success?" ":" NOT ");
+
+	printf(" - %f seconds spent\n", t.Get());
+	printf(" - %lu nodes searched\n", _closed.size());
+	printf(" - %lu open nodes\n", _open.size());
+	printf("\n");
 }
 
 
