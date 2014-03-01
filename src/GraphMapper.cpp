@@ -10,9 +10,14 @@ const char *GRAPH_MAPPER_HELP =
 		"Change between states by clicking their respective toggle-keys.\n"
 		"The states alter how clicks on tiles are interpreted.\n"
 		"\nStates:\n"
+
 		"\t(p) PATHFIND\n"
 		"\t\tClicks on two nodes will, if possible, find the shortest\n"
 		"\t\tpath between those nodes.\n"
+
+		"\t(w) WALL_ADD\n"
+		"\t\tToggle the state of a tile - green is walkable and blue\n"
+		"\t\tis a wall. The path will update when modifiying.\n" 
 
 		"\n";
 
