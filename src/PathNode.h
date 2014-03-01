@@ -8,9 +8,12 @@ using std::list;
 
 class World;
 
-/* The PathNode class should not be aware of what
- * the pathfinding algorithm does. Calculate G, H and F
- * values in a wrapper class of some description.
+/* Class PathNode
+ *
+ * The PathNode class is not aware of what
+ * is done to it when pathfinding. It is simply a 
+ * representation of a tile, whose data can be used
+ * to find a path.
  */
 class PathNode
 {
@@ -23,9 +26,13 @@ public:
     PathNode(int x, int y);
     ~PathNode();
 
+	/* Returns the position of the PathNode in tilespace.
+	 */
     void GetPosition(int *x, int *y) const;
     Vec GetPosition() const;
 
+	/* The PathNode reports it's color based on its type.
+	 */
     void GetColor(int *r, int *g, int *b) const;
     Color GetColor() const;
 
