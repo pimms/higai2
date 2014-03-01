@@ -137,7 +137,7 @@ void AStar::RemoveFromOpen(AStarNode *node)
 	}
 }
 
-bool AStar::IsExpanded(AStarNode *node) 
+bool AStar::IsOpen(AStarNode *node) 
 {
 	for (int i=0; i<_open.size(); i++) {
 		if (_open[i] == node) {
@@ -188,7 +188,7 @@ void AStar::ExpandChildren(AStarNode *node)
 			AStarNode *asnb = GetNode(nb);
 			if (!IsClosed(asnb)) {
 				asnb->SetParent(node);
-				if (!IsExpanded(asnb)) {
+				if (!IsOpen(asnb)) {
 					_open.push_back(asnb);
 				}
 			}
