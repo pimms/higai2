@@ -24,13 +24,24 @@ public:
 	 */
     bool OptimizePath(list<PathNode*> &path);
 
+	/* Are there any non-walkable tiles between the two tiles?
+	 */
     bool IsClearLineOfSight(PathNode *start, PathNode *b);
 
 private:
     World *_world;
 
+	/* Return the axis-aligned bounding box between the start- and
+	 * end-positions. All tiles in this area should be tested for
+	 * intersection when calculating LOS.
+	 */
     void GetIntersectionTestArea(PathNode *start, PathNode *end, 
 								VecF &tl, VecF &br);
+
+	/* Assigns the positions of "start" and "end" in "pq" and "p2". 
+	 * The points are modified slightly to accurately point to the
+	 * center of the tile rather than the top-left corner.
+	 */
     void GetPathLine(PathNode *start, PathNode *end, VecF &p1, VecF &p2);
 	
 	/* Are all the nodes on the path-segment between "start" and
