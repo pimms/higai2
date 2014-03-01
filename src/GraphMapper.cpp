@@ -42,9 +42,14 @@ void GraphMapper::OnMouseClick(Vec pos)
 	PathNode *node = GetNodeAtPixel(pos.x, pos.y);
 	if (!node) return;
 
-	// Attempt to handle the current state as a one-node state.
-	if (!PerformAction(node)) {
-		// The state requires two nodes
+	/* Attempt to treat the current state as a single-PathNode-state.
+	 * If ACTION_FAILURE is returned, the state requires two PathNodes.
+	 */
+	if (PerformAction(node) == ACTION_FAILURE) {
+		/* The current state requires two PathNodes. _lastNode and
+		 * the currently pressed PathNode are the two nodes in
+		 * question. 
+		 */
 		if (_lastNode) {
 			if (PerformAction(_lastNode, node) == ACTION_SUCCESS) {
 				_lastNode = NULL;
@@ -114,6 +119,9 @@ GraphMapper::ActionResult GraphMapper::PerformAction(PathNode *node)
 					? PathNode::WALKABLE 
 					: PathNode::WALL;
 			node->SetType(t);
+
+			// Update the current path using the previously 
+			// used PathNodes.
 			_pathcreator.FindPath();
 			return ACTION_SUCCESS;
 		}
@@ -133,10 +141,11 @@ GraphMapper::ActionResult GraphMapper::PerformAction(PathNode *node1,
 			return ACTION_FAILURE;	
 		case PATHFIND: 
 		{
+			// Find a path between the two nodes
 			_pathcreator.FindPath(node1, node2);
 			return ACTION_SUCCESS;
 		}
-		case ADD_WALL:
+		default:
 			return ACTION_FAILURE;
 	}
 

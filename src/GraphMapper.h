@@ -10,7 +10,11 @@ class PathNode;
 class Path;
 
 
-
+/* Class GraphMapper
+ *
+ * Class used to handle input.
+ * TODO: Rename the class to something more appropriate.
+ */
 class GraphMapper : public InputListener {
 public:
 	GraphMapper(World *world, Window *window);
@@ -18,22 +22,35 @@ public:
 
 	void OnMouseClick(Vec pos);
 	void OnKeyDown(int key);
-
+	
+	/* Return the current path. */
 	const Path* GetPath() const;
 
 private:
+	/* Used when attempting to perform actions.
+	 */
 	enum ActionResult {
 		ACTION_FAILURE,
 		ACTION_SUCCESS,
 	};
 
 	void OnStateChanged();
+
+	/* Attempts to perform an action based on the current state.
+	 * If the current state requires only a single PathNode, it
+	 * should perform it's action here and return ACTION_SUCCESS.
+	 * Called after a PathNode has been clicked.
+	 */
 	ActionResult PerformAction(PathNode *node);
+
+	/* Attempts to perform an action based on the current state.
+	 * This method is called when PerformAction(PathNode*) has 
+	 * failed twice. States requiring two PathNodes to function
+	 * should perform their action here and return ACTION_SUCCESS.
+	 */
 	ActionResult PerformAction(PathNode *node1, PathNode *node2);
 	
 	PathNode* GetNodeAtPixel(int x, int y);
-
-	void SetNewPath(Path *path);
 	
 
 	World *_world;
@@ -41,6 +58,12 @@ private:
 	PathCreator _pathcreator;
 	PathNode *_lastNode;
 
+	/* The GraphMapper can exist in either of these states.
+	 * The states are changed through key-presses. The states
+	 * should be used to differentiate how presses of tiles
+	 * are handled. States can need either one or two PathNodes
+	 * to be able to perform their designated action.
+	 */
 	enum State {
 		NONE, 				// Default
 		PATHFIND, 			// P
