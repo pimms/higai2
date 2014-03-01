@@ -20,7 +20,7 @@ void InitializeWorld(World *world)
     }
 }
 
-#define WORLD_SIZE 50
+#define WORLD_SIZE 80
 int ai_main(int argc, char *argv[])
 {
 	// Initialize the world
@@ -29,7 +29,7 @@ int ai_main(int argc, char *argv[])
 
 	// Initialize the window
     Window window;
-    if (!window.Init(600, 600)) {
+    if (!window.Init(750, 750)) {
         return 1;
     }
 

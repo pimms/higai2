@@ -9,6 +9,15 @@ class PathNode;
 class Path;
 
 
+// Virtual callback class for listening to changes to
+// the terrain (walls added / removed).
+class MapChangeListener {
+public:
+	virtual void OnTerrainChanged() = 0;
+};
+
+
+
 class GraphMapper : public InputListener {
 public:
 	GraphMapper(World *world, Window *window);
@@ -18,6 +27,8 @@ public:
 	void OnKeyDown(int key);
 
 	const Path* GetPath() const;
+
+	void SetMapChangeListener(MapChangeListener *listener);
 
 private:
 	enum ActionResult {
@@ -37,6 +48,7 @@ private:
 	World *_world;
 	Window *_window;
 	Path *_path;
+	MapChangeListener *_listener;
 
 	PathNode *_lastNode;
 

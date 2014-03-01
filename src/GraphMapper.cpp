@@ -22,7 +22,8 @@ GraphMapper::GraphMapper(World *world, Window *window)
 	: 	_world(world),
 		_window(window),
 		_state(NONE),
-		_path(NULL)
+		_path(NULL),
+		_listener(NULL)
 {
 	printf("%s", GRAPH_MAPPER_HELP);
 }
@@ -79,6 +80,12 @@ const Path* GraphMapper::GetPath() const
 }
 
 
+void GraphMapper::SetMapChangeListener(MapChangeListener *listener)
+{
+	_listener = listener;
+}
+
+
 /***** Private Methods *****/
 void GraphMapper::OnStateChanged() 
 {
@@ -112,6 +119,9 @@ GraphMapper::ActionResult GraphMapper::PerformAction(PathNode *node)
 					? PathNode::WALKABLE 
 					: PathNode::WALL;
 			node->SetType(t);
+			if (_listener) {
+				_listener->OnTerrainChanged();
+			}
 			return ACTION_SUCCESS;
 		}
 		default:
