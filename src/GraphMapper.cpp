@@ -22,17 +22,13 @@ GraphMapper::GraphMapper(World *world, Window *window)
 	: 	_world(world),
 		_window(window),
 		_state(NONE),
-		_path(NULL),
-		_listener(NULL)
+		_pathcreator(world)
 {
 	printf("%s", GRAPH_MAPPER_HELP);
 }
 
 GraphMapper::~GraphMapper()
 {
-	if (_path) {
-		delete _path;
-	}
 }
 
 
@@ -76,13 +72,7 @@ void GraphMapper::OnKeyDown(int key)
 
 const Path* GraphMapper::GetPath() const
 {
-	return _path;
-}
-
-
-void GraphMapper::SetMapChangeListener(MapChangeListener *listener)
-{
-	_listener = listener;
+	return _pathcreator.GetPath();
 }
 
 
@@ -119,9 +109,7 @@ GraphMapper::ActionResult GraphMapper::PerformAction(PathNode *node)
 					? PathNode::WALKABLE 
 					: PathNode::WALL;
 			node->SetType(t);
-			if (_listener) {
-				_listener->OnTerrainChanged();
-			}
+			_pathcreator.FindPath();
 			return ACTION_SUCCESS;
 		}
 		default:
@@ -140,8 +128,7 @@ GraphMapper::ActionResult GraphMapper::PerformAction(PathNode *node1,
 			return ACTION_FAILURE;	
 		case PATHFIND: 
 		{
-			AStar astar(_world);
-			SetNewPath(astar.Find(node1, node2));
+			_pathcreator.FindPath(node1, node2);
 			return ACTION_SUCCESS;
 		}
 		case ADD_WALL:
@@ -161,12 +148,3 @@ PathNode* GraphMapper::GetNodeAtPixel(int x, int y)
 	return _world->GetNode(idx.x, idx.y);
 }
 
-
-void GraphMapper::SetNewPath(Path *path)
-{
-	if (_path) {
-		delete _path;
-	}
-
-	_path = path;
-}

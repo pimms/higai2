@@ -1,20 +1,13 @@
 #pragma once
 
 #include "Window.h"
+#include "PathCreator.h"
 
 
 // Forward declarations
 class World;
 class PathNode;
 class Path;
-
-
-// Virtual callback class for listening to changes to
-// the terrain (walls added / removed).
-class MapChangeListener {
-public:
-	virtual void OnTerrainChanged() = 0;
-};
 
 
 
@@ -27,8 +20,6 @@ public:
 	void OnKeyDown(int key);
 
 	const Path* GetPath() const;
-
-	void SetMapChangeListener(MapChangeListener *listener);
 
 private:
 	enum ActionResult {
@@ -47,9 +38,7 @@ private:
 
 	World *_world;
 	Window *_window;
-	Path *_path;
-	MapChangeListener *_listener;
-
+	PathCreator _pathcreator;
 	PathNode *_lastNode;
 
 	enum State {
