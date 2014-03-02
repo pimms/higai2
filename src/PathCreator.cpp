@@ -5,11 +5,12 @@
 #include "AStar.h"
 
 
-PathCreator::PathCreator(World *world)
+PathCreator::PathCreator(World *world, Renderer *renderer)
 	: 	_world(world),
 		_path(NULL),
 		_curA(NULL),
-		_curB(NULL)
+		_curB(NULL),
+		_renderer(renderer)
 {
 
 }
@@ -39,6 +40,7 @@ Path* PathCreator::FindPath(PathNode *a,
 	}
 
 	AStar astar(_world);
+	astar.SetRenderer(_renderer);
 	_path = astar.Find(a, b, st);
 	_curA = a;
 	_curB = b;

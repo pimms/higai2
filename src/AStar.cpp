@@ -4,10 +4,12 @@
 #include "World.h"
 #include "Path.h"
 #include "Timer.h"
+#include "Renderer.h"
 
 /***** AStar *****/
 AStar::AStar(World *world)
-	:	_world(world)
+	:	_world(world),
+		_renderer(NULL)
 {
 
 }
@@ -15,6 +17,12 @@ AStar::AStar(World *world)
 AStar::~AStar()
 {
 
+}
+
+
+void AStar::SetRenderer(Renderer *renderer)
+{
+	_renderer = renderer;
 }
 
 
@@ -32,20 +40,10 @@ Path* AStar::Find(PathNode *start, PathNode *end, SearchType stype)
     _open.push_back(node);
 
     while (_open.size() > 0 && ++iterations < max_iterations) {
+		AStarNode *old = node;
 		node = SelectNextFromOpen();
-
-		/* DEUBG PRINT OF _OPEN */
-		/*
-		printf("\n_open: %lu elems\n", _open.size());
-		for (int i=0; i<_open.size(); i++) {
-			int x, y, f;
-			_open[i]->PNode()->GetPosition(&x, &y);
-			f = _open[i]->F();
-			printf("%c [%i, %i] F() = %i\n", 
-					node==_open[i]?'x':'-',x, y, f);
-		}
-		getchar();
-		*/
+		
+		DrawCurrentNode(old, node);
 
         if (node->PNode() == end) {
             success = true;
@@ -238,6 +236,15 @@ void AStar::ExpandChildren(AStarNode *node, AStar::SearchType stype)
 }
 
 
+void AStar::DrawCurrentNode(AStarNode *prev, AStarNode *cur) 
+{
+	if (_renderer) {
+		_renderer->DrawPathNode(_world, prev->PNode());
+		_renderer->DrawPathNode(_world, cur->PNode(), 
+								Color(255, 255, 0));
+		_renderer->Present();
+	}
+}
 
 
 

@@ -9,6 +9,7 @@
 class World;
 class PathNode;
 class Path;
+class Renderer;
 
 
 /* Class GraphMapper
@@ -18,7 +19,7 @@ class Path;
  */
 class GraphMapper : public InputListener {
 public:
-	GraphMapper(World *world, Window *window);
+	GraphMapper(World *world, Window *window, Renderer *renderer);
 	~GraphMapper();
 
 	void OnMouseClick(Vec pos);
@@ -56,6 +57,7 @@ private:
 
 	World *_world;
 	Window *_window;
+	Renderer *_renderer;
 	PathCreator _pathcreator;
 	PathNode *_lastNode;
 

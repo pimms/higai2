@@ -32,12 +32,14 @@ const char *GRAPH_MAPPER_HELP =
 
 
 
-GraphMapper::GraphMapper(World *world, Window *window)
+GraphMapper::GraphMapper(World *world, Window *window, 
+						 Renderer *renderer)
 	: 	_world(world),
 		_window(window),
 		_state(NONE),
-		_pathcreator(world),
-		_searchType(AStar::GRAPH)
+		_pathcreator(world, renderer),
+		_searchType(AStar::GRAPH),
+		_renderer(renderer)
 {
 	printf("%s", GRAPH_MAPPER_HELP);
 }

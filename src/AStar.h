@@ -14,6 +14,7 @@ class PathNode;
 class AStarNode;
 class Path;
 class Timer;
+class Renderer;
 
 /* AStar
  *
@@ -33,6 +34,11 @@ public:
 
     AStar(World *world);
     ~AStar();
+	
+	/* Rendering the pathfinding is completely optional.
+	 * If the renderer is assigned, the progress will be drawn.
+	 */
+	void SetRenderer(Renderer *renderer);
 
 	/* Attempts to find a path between "s" and "e". If no path is 
 	 * available, NULL is returned.
@@ -85,6 +91,12 @@ private:
 	/* Expand the node and add it's neighbours to OPEN. */
     void ExpandChildren(AStarNode *node, SearchType stype);
 
+	/* If a Renderer has been assigned, draw the current open
+	 * tile and present the buffer. The previoius tile is 
+	 * drawn in it's original color.
+	 */
+	void DrawCurrentNode(AStarNode *prev, AStarNode *cur);
+
     map<PathNode*,AStarNode*> _nmap;
     PathNode *_target;
 
@@ -92,6 +104,7 @@ private:
     vector<AStarNode*> _closed;
 
     World *_world;
+	Renderer *_renderer;
 };
 
 

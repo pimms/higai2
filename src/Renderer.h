@@ -29,9 +29,13 @@ public:
     void DrawPath(World*, const list<PathNode*>&, Color=Color(0,0,0));
 
     void DrawPathNode(World *world, PathNode *node);
+    void DrawPathNode(World *world, PathNode *node, Color c);
 
     void SetRenderColor(PathNode *node);
+	void SetRenderColor(Color color);
     void DrawRect(Vec pos, Vec dim);
+
+	void Present();
 
 private:
     Vec GetTileDimensions(World *world);

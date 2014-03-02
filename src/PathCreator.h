@@ -4,11 +4,12 @@
 class Path;
 class World;
 class PathNode;
+class Renderer;
 
 
 class PathCreator {
 public:
-	PathCreator(World *world);
+	PathCreator(World *world, Renderer *renderer);
 	~PathCreator();
 
 	/* Find a path between _curA and _curB, the previously
@@ -28,6 +29,7 @@ public:
 
 private:
 	World *_world;
+	Renderer *_renderer;
 
 	PathNode *_curA;
 	PathNode *_curB;
