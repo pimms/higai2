@@ -54,8 +54,10 @@ Path* AStar::Find(PathNode *start, PathNode *end, SearchType stype)
 
 		if (stype == GRAPH) {
 			CloseNode(node);
+		} else {
+			RemoveFromOpen(node);
 		}
-
+		
         ExpandChildren(node, stype);
     }
 
@@ -145,11 +147,13 @@ Path* AStar::CreatePath(AStarNode *goal)
 
 AStarNode* AStar::SelectNextFromOpen() 
 {
+	int selected = 0;
 	AStarNode *node = _open[0];
 
 	for (int i=1; i<_open.size(); i++) {
 		if (_open[i]->F() <= node->F()) {
 			node = _open[i];
+			selected = i;
 		}
 	}
 
