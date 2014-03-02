@@ -53,10 +53,9 @@ Path* AStar::Find(PathNode *start, PathNode *end, SearchType stype)
         }
 
 		if (stype == GRAPH) {
-			CloseNode(node);
-		} else {
-			RemoveFromOpen(node);
-		}
+			_closed.push_back(node);	
+		} 
+		RemoveFromOpen(node);
 		
         ExpandChildren(node, stype);
     }
