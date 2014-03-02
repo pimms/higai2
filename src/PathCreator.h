@@ -25,6 +25,8 @@ public:
 	 */
 	Path* GetPath() const;
 
+	bool TestPath(const Path *path);
+
 private:
 	World *_world;
 

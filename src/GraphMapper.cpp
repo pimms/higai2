@@ -113,6 +113,7 @@ GraphMapper::ActionResult GraphMapper::PerformAction(PathNode *node)
 	switch (_state) {
 		case ADD_WALL:
 		{	
+			bool newPath = false;
 			// Toggle the type of the node
 			PathNode::Type t = node->GetType();
 			t = (t==PathNode::WALL) 
@@ -122,7 +123,19 @@ GraphMapper::ActionResult GraphMapper::PerformAction(PathNode *node)
 
 			// Update the current path using the previously 
 			// used PathNodes.
-			_pathcreator.FindPath();
+
+			/*
+			¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤
+			Need to find the node (if exist) that is before the new
+			blocking wall. 
+			Do an astar search from that node
+			OR
+			Do an astar search again from the original node
+			Not quite sure.....
+			¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤
+			*/
+			newPath = _pathcreator.TestPath(GetPath());
+			//_pathcreator.FindPath();
 			return ACTION_SUCCESS;
 		}
 		default:

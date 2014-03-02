@@ -50,3 +50,17 @@ Path* PathCreator::GetPath() const
 {
 	return _path;
 }
+
+bool PathCreator::TestPath(const Path *oldPath) {
+	AStar astar(_world);
+	Path *path = GetPath();
+	Path *newPath = FindPath();
+	if (_path == newPath) 
+	{
+		printf("No wall added in path. No need for new path.\n\n");
+		return false;
+	} else {
+		printf("Wall added in path. Finding new path.\n\n");
+		return true;
+	}
+}
