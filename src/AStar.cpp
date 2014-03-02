@@ -239,10 +239,13 @@ void AStar::ExpandChildren(AStarNode *node, AStar::SearchType stype)
 void AStar::DrawCurrentNode(AStarNode *prev, AStarNode *cur) 
 {
 	if (_renderer) {
-		_renderer->DrawPathNode(_world, prev->PNode());
+		_renderer->DrawPathNode(_world, prev->PNode(),
+								Color(125, 125, 0));
 		_renderer->DrawPathNode(_world, cur->PNode(), 
 								Color(255, 255, 0));
 		_renderer->Present();
+
+		SDL_Delay(16);
 	}
 }
 
