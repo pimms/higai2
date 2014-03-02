@@ -33,12 +33,12 @@ int ai_main(int argc, char *argv[])
         return 1;
     }
 
-	// Initialize the graph mapper
-	GraphMapper mapper(&world, &window);
-	window.AddListener(&mapper);
-	
 	// Initialize the renderer
     Renderer renderer(&window);
+
+	// Initialize the graph mapper
+	GraphMapper mapper(&world, &window, &renderer);
+	window.AddListener(&mapper);
 	
 	// Enter the simulation loop
     while (window.ShouldQuit() == false) {

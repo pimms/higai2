@@ -31,7 +31,7 @@ void Renderer::DrawWorld(World *world)
         }
     }
 
-    _window->PresentRenderer();
+	Present();
 }
 
 void Renderer::DrawPath(World *world, const Path *path)
@@ -64,18 +64,23 @@ void Renderer::DrawPath(World *world, const list<PathNode*> &path,
     }
 
 	Color(0,0,0,255).Assign(_window->GetRenderer());
-	_window->PresentRenderer();
+	Present();
 }
 
 
 void Renderer::DrawPathNode(World *world, PathNode *node)
 {
+	Color c = node->GetColor();	
+	DrawPathNode(world, node, c);
+}
 
+void Renderer::DrawPathNode(World *world, PathNode *node, Color c)
+{
     Vec dim = GetTileDimensions(world);
     Vec pos = GetTileCoordinate(world, node, false);
 
     // Draw a black 1px outline
-    SDL_SetRenderDrawColor(_window->GetRenderer(), 0, 0, 0, 255);
+	SetRenderColor(Color(0,0,0));
     DrawRect(pos, dim);
 
     // Draw the tile
@@ -84,11 +89,12 @@ void Renderer::DrawPathNode(World *world, PathNode *node)
     dim.x -= 2;
     dim.y -= 2;
 
-    SetRenderColor(node);
+    SetRenderColor(c);
     DrawRect(pos, dim);
 
     // Return to black color
-    SDL_SetRenderDrawColor(_window->GetRenderer(), 0, 0, 0, 255);
+	SetRenderColor(Color(0,0,0));
+	
 }
 
 
@@ -96,6 +102,12 @@ void Renderer::SetRenderColor(PathNode *node)
 {
     Color color = node->GetColor();
     color.Assign(_window->GetRenderer());
+}
+
+void Renderer::SetRenderColor(Color color)
+{
+    SDL_SetRenderDrawColor(_window->GetRenderer(),
+			color.r, color.g, color.b, color.a);
 }
 
 void Renderer::DrawRect(Vec pos, Vec dim)
@@ -132,4 +144,10 @@ Vec Renderer::GetTileCoordinate(World *world, PathNode *node, bool center)
     }
 
     return v;
+}
+
+
+void Renderer::Present() 
+{
+	_window->PresentRenderer();
 }

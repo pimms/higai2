@@ -5,11 +5,13 @@
 #include "AStar.h"
 
 
-PathCreator::PathCreator(World *world)
+PathCreator::PathCreator(World *world, Renderer *renderer)
 	: 	_world(world),
 		_path(NULL),
 		_curA(NULL),
-		_curB(NULL)
+		_curB(NULL),
+		_renderer(renderer),
+		_drawProgress(false)
 {
 
 }
@@ -39,6 +41,10 @@ Path* PathCreator::FindPath(PathNode *a,
 	}
 
 	AStar astar(_world);
+	if (_drawProgress) {
+		astar.SetRenderer(_renderer);
+	}
+
 	_path = astar.Find(a, b, st);
 	_curA = a;
 	_curB = b;
@@ -52,16 +58,7 @@ Path* PathCreator::GetPath() const
 	return _path;
 }
 
-bool PathCreator::TestPath(const Path *oldPath) {
-	AStar astar(_world);
-	Path *path = GetPath();
-	Path *newPath = FindPath();
-	if (_path == newPath) 
-	{
-		printf("No wall added in path. No need for new path.\n\n");
-		return false;
-	} else {
-		printf("Wall added in path. Finding new path.\n\n");
-		return true;
-	}
+void PathCreator::SetProgressRendering(bool flag)
+{
+	_drawProgress = flag;
 }

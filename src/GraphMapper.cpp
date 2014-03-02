@@ -28,16 +28,23 @@ const char *GRAPH_MAPPER_HELP =
 		"\t(g/t) Toggle tree-search / graph-search\n"
 		"\t\tAlter how the A* algorithm is run.\n"
 
+		"\t(d) Draw progress of A*\n"
+		"\t\tThe tile currently being visited is drawn in orange\n"
+		"\t\twhen this option is enabled.\n"
+
 		"\n";
 
 
 
-GraphMapper::GraphMapper(World *world, Window *window)
+GraphMapper::GraphMapper(World *world, Window *window, 
+						 Renderer *renderer)
 	: 	_world(world),
 		_window(window),
 		_state(NONE),
-		_pathcreator(world),
-		_searchType(AStar::GRAPH)
+		_pathcreator(world, renderer),
+		_searchType(AStar::GRAPH),
+		_renderer(renderer),
+		_drawProgress(false)
 {
 	printf("%s", GRAPH_MAPPER_HELP);
 }
@@ -96,6 +103,11 @@ void GraphMapper::OnKeyDown(int key)
 					_searchType==AStar::GRAPH?"GRAPH":"TREE");
 			_pathcreator.FindPath(_searchType);
 			break;
+
+		case 'd':
+			_drawProgress = !_drawProgress;
+			printf("Draw progress: %s\n", _drawProgress?"true":"false");
+			_pathcreator.SetProgressRendering(_drawProgress);
 	}
 
 	if (nstate != NONE && _state != nstate) {

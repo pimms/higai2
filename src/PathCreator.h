@@ -4,11 +4,12 @@
 class Path;
 class World;
 class PathNode;
+class Renderer;
 
 
 class PathCreator {
 public:
-	PathCreator(World *world);
+	PathCreator(World *world, Renderer *renderer);
 	~PathCreator();
 
 	/* Find a path between _curA and _curB, the previously
@@ -26,10 +27,14 @@ public:
 	 */
 	Path* GetPath() const;
 
-	bool TestPath(const Path *path);
+	/* Define wether or not to draw the intermediates in A*.
+	 */
+	void SetProgressRendering(bool flag);
 
 private:
 	World *_world;
+	Renderer *_renderer;
+	bool _drawProgress;
 
 	PathNode *_curA;
 	PathNode *_curB;
