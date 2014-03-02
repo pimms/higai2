@@ -2,6 +2,7 @@
 
 #include "Window.h"
 #include "PathCreator.h"
+#include "AStar.h"
 
 
 // Forward declarations
@@ -70,7 +71,8 @@ private:
 		ADD_WALL,			// W
 	};
 	State _state;
-	
+
+	AStar::SearchType _searchType;
 };
 
 

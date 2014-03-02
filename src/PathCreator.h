@@ -1,4 +1,5 @@
 #pragma once
+#include "AStar.h"
 
 class Path;
 class World;
@@ -15,11 +16,11 @@ public:
 	 * world has changed, as it will return the exact same
 	 * path otherwise.
 	 */
-	Path* FindPath();
+	Path* FindPath(AStar::SearchType st);
 
 	/* Finds a path between A and B.
 	 */
-	Path* FindPath(PathNode *a, PathNode *b);
+	Path* FindPath(PathNode *a, PathNode *b, AStar::SearchType st);
 
 	/* Return the path found most recently.
 	 */

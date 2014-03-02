@@ -18,7 +18,7 @@ AStar::~AStar()
 }
 
 
-Path* AStar::Find(PathNode *start, PathNode *end)
+Path* AStar::Find(PathNode *start, PathNode *end, SearchType stype)
 {
     Initialize(start, end);
 	Timer time;
@@ -29,6 +29,7 @@ Path* AStar::Find(PathNode *start, PathNode *end)
     _open.push_back(node);
 
     while (_open.size() > 0) {
+		printf("Open: %lu\n", _open.size());
         node = _open[0];
         for (int i=1; i<_open.size(); i++) {
             if (_open[i]->F() < node->F()) {
@@ -41,7 +42,10 @@ Path* AStar::Find(PathNode *start, PathNode *end)
             break;
         }
 
-		CloseNode(node);
+		if (stype == GRAPH) {
+			CloseNode(node);
+		}
+
         ExpandChildren(node);
     }
 
@@ -182,6 +186,8 @@ void AStar::ExpandChildren(AStarNode *node)
 		 *
 		 * The node is also added to the open list if 
 		 * it has not been already.
+		 * Note that when tree-searching, the CLOSED list is
+		 * empty at all times.
 		 */
 		nb = _world->GetNode(p);
 		if (nb && nb->GetType() == PathNode::WALKABLE) {

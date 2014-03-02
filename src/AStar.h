@@ -26,13 +26,18 @@ class Timer;
 class AStar
 {
 public:
+	enum SearchType {
+		GRAPH,
+		TREE,
+	};
+
     AStar(World *world);
     ~AStar();
 
 	/* Attempts to find a path between "s" and "e". If no path is 
 	 * available, NULL is returned.
 	 */
-    Path* Find(PathNode *s, PathNode *e);
+    Path* Find(PathNode *s, PathNode *e, SearchType=GRAPH);
 
 private:
 	/* Initialize required values before the pathfinding actually

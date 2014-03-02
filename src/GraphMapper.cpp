@@ -27,7 +27,8 @@ GraphMapper::GraphMapper(World *world, Window *window)
 	: 	_world(world),
 		_window(window),
 		_state(NONE),
-		_pathcreator(world)
+		_pathcreator(world),
+		_searchType(AStar::GRAPH)
 {
 	printf("%s", GRAPH_MAPPER_HELP);
 }
@@ -70,6 +71,16 @@ void GraphMapper::OnKeyDown(int key)
 			break;
 		case 'w':
 			nstate = ADD_WALL;
+			break;
+
+		case 'g':
+		case 't':
+			_searchType = _searchType == AStar::GRAPH
+							? AStar::TREE
+							: AStar::GRAPH;
+			printf("Search tye: %s\n", 
+					_searchType==AStar::GRAPH?"GRAPH":"TREE");
+			_pathcreator.FindPath(_searchType);
 			break;
 	}
 
@@ -122,7 +133,7 @@ GraphMapper::ActionResult GraphMapper::PerformAction(PathNode *node)
 
 			// Update the current path using the previously 
 			// used PathNodes.
-			_pathcreator.FindPath();
+			_pathcreator.FindPath(_searchType);
 			return ACTION_SUCCESS;
 		}
 		default:
@@ -142,7 +153,7 @@ GraphMapper::ActionResult GraphMapper::PerformAction(PathNode *node1,
 		case PATHFIND: 
 		{
 			// Find a path between the two nodes
-			_pathcreator.FindPath(node1, node2);
+			_pathcreator.FindPath(node1, node2, _searchType);
 			return ACTION_SUCCESS;
 		}
 		default:
