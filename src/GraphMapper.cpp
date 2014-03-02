@@ -17,7 +17,16 @@ const char *GRAPH_MAPPER_HELP =
 
 		"\t(w) WALL_ADD\n"
 		"\t\tToggle the state of a tile - green is walkable and blue\n"
-		"\t\tis a wall. The path will update when modifiying.\n" 
+		"\t\tis a wall. The path will update when modifiying.\n" 	
+
+		"\n"
+		
+		"Some modes of operation can be changed without altering the\n"
+		"state. Most secondary options affect how the pathfinding is\n"
+		"executed.\n"
+		
+		"\t(g/t) Toggle tree-search / graph-search\n"
+		"\t\tAlter how the A* algorithm is run.\n"
 
 		"\n";
 
@@ -66,13 +75,18 @@ void GraphMapper::OnKeyDown(int key)
 	State nstate = NONE;
 
 	switch (key) {
+		/* STATE ALTERING KEYS */
 		case 'p':
 			nstate = PATHFIND;
 			break;
 		case 'w':
 			nstate = ADD_WALL;
 			break;
-
+		
+		/* NON-STATE ALTERING KEYS
+		 * Keys which alter the mode of operation without 
+		 * changing the GraphMapper-state are handled here.
+		 */
 		case 'g':
 		case 't':
 			_searchType = _searchType == AStar::GRAPH
@@ -84,7 +98,7 @@ void GraphMapper::OnKeyDown(int key)
 			break;
 	}
 
-	if (_state != nstate) {
+	if (nstate != NONE && _state != nstate) {
 		_state = nstate;
 		OnStateChanged();
 	}

@@ -20,22 +20,32 @@ AStar::~AStar()
 
 Path* AStar::Find(PathNode *start, PathNode *end, SearchType stype)
 {
+	const int max_iterations = 10000;
+	int iterations = 0;
+
     Initialize(start, end);
 	Timer time;
 	time.Start();
 
     bool success = false;
-    AStarNode *node = GetNode(start);
+    AStarNode *node = GetNode(start, stype);
     _open.push_back(node);
 
-    while (_open.size() > 0) {
-		printf("Open: %lu\n", _open.size());
-        node = _open[0];
-        for (int i=1; i<_open.size(); i++) {
-            if (_open[i]->F() < node->F()) {
-                node = _open[i];
-            }
-        }
+    while (_open.size() > 0 && ++iterations < max_iterations) {
+		node = SelectNextFromOpen();
+
+		/* DEUBG PRINT OF _OPEN */
+		/*
+		printf("\n_open: %lu elems\n", _open.size());
+		for (int i=0; i<_open.size(); i++) {
+			int x, y, f;
+			_open[i]->PNode()->GetPosition(&x, &y);
+			f = _open[i]->F();
+			printf("%c [%i, %i] F() = %i\n", 
+					node==_open[i]?'x':'-',x, y, f);
+		}
+		getchar();
+		*/
 
         if (node->PNode() == end) {
             success = true;
@@ -46,7 +56,7 @@ Path* AStar::Find(PathNode *start, PathNode *end, SearchType stype)
 			CloseNode(node);
 		}
 
-        ExpandChildren(node);
+        ExpandChildren(node, stype);
     }
 
 	time.Stop();
@@ -96,17 +106,25 @@ void AStar::PrintStatistics(Timer t, bool success) const
 }
 
 
-AStarNode* AStar::GetNode(PathNode *pathnode)
+AStarNode* AStar::GetNode(PathNode *pathnode, AStar::SearchType stype)
 {
-    if (_nmap.count(pathnode) != 0) {
-        return _nmap[pathnode];
-    }
+	AStarNode *astar = NULL;
 
-    AStarNode *an = new AStarNode(pathnode);
-    an->CalculateH(_target);
+	if (stype == GRAPH) {
+		if (_nmap.count(pathnode) != 0) {
+			return _nmap[pathnode];
+		}
 
-    _nmap[pathnode] = an;
-    return an;
+		astar = new AStarNode(pathnode);
+		astar->CalculateH(_target);
+
+		_nmap[pathnode] = astar;
+	} else if (stype == TREE) {
+		astar = new AStarNode(pathnode);
+		astar->CalculateH(_target, 2);
+	}
+
+	return astar;
 }
 
 Path* AStar::CreatePath(AStarNode *goal) 
@@ -124,6 +142,19 @@ Path* AStar::CreatePath(AStarNode *goal)
 	return path;
 }
 
+
+AStarNode* AStar::SelectNextFromOpen() 
+{
+	AStarNode *node = _open[0];
+
+	for (int i=1; i<_open.size(); i++) {
+		if (_open[i]->F() <= node->F()) {
+			node = _open[i];
+		}
+	}
+
+	return node;
+}
 
 void AStar::CloseNode(AStarNode *node) 
 {
@@ -163,7 +194,7 @@ bool AStar::IsClosed(AStarNode *node)
 	return false;
 }
 
-void AStar::ExpandChildren(AStarNode *node)
+void AStar::ExpandChildren(AStarNode *node, AStar::SearchType stype)
 {
 	const Vec dirs[4] = {
 		Vec(-1, 0), Vec(1, 0),
@@ -185,16 +216,17 @@ void AStar::ExpandChildren(AStarNode *node)
 		 * - The node is walkable
 		 *
 		 * The node is also added to the open list if 
-		 * it has not been already.
+		 * it has not been already. 
 		 * Note that when tree-searching, the CLOSED list is
-		 * empty at all times.
+		 * empty at all times, and children are ALWAYS added to
+		 * the OPEN list.
 		 */
 		nb = _world->GetNode(p);
 		if (nb && nb->GetType() == PathNode::WALKABLE) {
-			AStarNode *asnb = GetNode(nb);
+			AStarNode *asnb = GetNode(nb, stype);
 			if (!IsClosed(asnb)) {
 				asnb->SetParent(node);
-				if (!IsOpen(asnb)) {
+				if (!IsOpen(asnb) || stype == TREE) {
 					_open.push_back(asnb);
 				}
 			}
@@ -223,12 +255,13 @@ int AStarNode::F()
 }
 
 
-void AStarNode::CalculateH(PathNode *target)
+void AStarNode::CalculateH(PathNode *target, int cost)
 {
     Vec p1 = _pnode->GetPosition();
     Vec p2 = target->GetPosition();
 
     _h = abs(p1.x-p2.x) + abs(p1.y-p2.y);
+	_h *= cost;
 }
 
 void AStarNode::SetParent(AStarNode *parent)

@@ -53,16 +53,25 @@ private:
 	 */
 	void PrintStatistics(Timer t, bool success) const;
 
-	/* Mapper function between PathNodes and AStarNodes. If the 
-	 * PathNode's corresponding AStarNode has not been requested
-	 * before, it is created and stored in "_nmap".
+	/* Mapper function between PathNodes and AStarNodes. 
+	 *
+	 * GRAPH:
+	 * If the PathNode's corresponding AStarNode has not been 
+	 * requested before, it is created and stored in "_nmap".
+	 *
+	 * TREE:
+	 * A new AStarNode* is created on every request.
 	 */
-    AStarNode* GetNode(PathNode*);
+    AStarNode* GetNode(PathNode*, SearchType);
 
 	/* Back-track from the destination-AStarNode to create the
 	 * full path found.
 	 */
 	Path* CreatePath(AStarNode *goal);
+
+	/* Returns the next node to be examined in the pathfinding.
+	 */
+	AStarNode* SelectNextFromOpen();
 
 	/* Remove the node from OPEN and put it in CLOSED. */
 	void CloseNode(AStarNode *node);
@@ -74,7 +83,7 @@ private:
 	bool IsClosed(AStarNode *node);
 
 	/* Expand the node and add it's neighbours to OPEN. */
-    void ExpandChildren(AStarNode *node);
+    void ExpandChildren(AStarNode *node, SearchType stype);
 
     map<PathNode*,AStarNode*> _nmap;
     PathNode *_target;
@@ -100,7 +109,10 @@ public:
 
     virtual int F();
 
-    virtual void CalculateH(PathNode *target);
+	/* Calculate the heuristics cost from _pnode to target.
+	 * H = cost * manhattan_dist(_pnode, target)
+	 */
+    virtual void CalculateH(PathNode *target, int cost=1);
     virtual void SetParent(AStarNode *parent);
 	AStarNode* GetParent();
 
