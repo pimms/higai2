@@ -245,6 +245,7 @@ void AStar::DrawCurrentNode(AStarNode *prev, AStarNode *cur)
 								Color(255, 255, 0));
 		_renderer->Present();
 
+		// Manual Vsync. yolo.
 		SDL_Delay(16);
 	}
 }
