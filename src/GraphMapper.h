@@ -53,6 +53,10 @@ private:
 	ActionResult PerformAction(PathNode *node1, PathNode *node2);
 	
 	PathNode* GetNodeAtPixel(int x, int y);
+
+	void NewPath();
+
+	void FindNewPath(PathNode *a, PathNode *end);
 	
 
 	World *_world;
