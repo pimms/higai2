@@ -68,7 +68,6 @@ void Renderer::DrawPath(World *world, const list<PathNode*> &path,
 }
 
 
-/**** Private Methods *****/
 void Renderer::DrawPathNode(World *world, PathNode *node)
 {
 

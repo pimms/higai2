@@ -28,12 +28,12 @@ public:
 	void DrawPath(World*, const Path*);
     void DrawPath(World*, const list<PathNode*>&, Color=Color(0,0,0));
 
-private:
     void DrawPathNode(World *world, PathNode *node);
 
     void SetRenderColor(PathNode *node);
     void DrawRect(Vec pos, Vec dim);
 
+private:
     Vec GetTileDimensions(World *world);
 
     /* If center is true, the center of the tile is returned.

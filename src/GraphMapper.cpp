@@ -17,7 +17,16 @@ const char *GRAPH_MAPPER_HELP =
 
 		"\t(w) WALL_ADD\n"
 		"\t\tToggle the state of a tile - green is walkable and blue\n"
-		"\t\tis a wall. The path will update when modifiying.\n" 
+		"\t\tis a wall. The path will update when modifiying.\n" 	
+
+		"\n"
+		
+		"Some modes of operation can be changed without altering the\n"
+		"state. Most secondary options affect how the pathfinding is\n"
+		"executed.\n"
+		
+		"\t(g/t) Toggle tree-search / graph-search\n"
+		"\t\tAlter how the A* algorithm is run.\n"
 
 		"\n";
 
@@ -27,7 +36,8 @@ GraphMapper::GraphMapper(World *world, Window *window)
 	: 	_world(world),
 		_window(window),
 		_state(NONE),
-		_pathcreator(world)
+		_pathcreator(world),
+		_searchType(AStar::GRAPH)
 {
 	printf("%s", GRAPH_MAPPER_HELP);
 }
@@ -65,15 +75,30 @@ void GraphMapper::OnKeyDown(int key)
 	State nstate = NONE;
 
 	switch (key) {
+		/* STATE ALTERING KEYS */
 		case 'p':
 			nstate = PATHFIND;
 			break;
 		case 'w':
 			nstate = ADD_WALL;
 			break;
+		
+		/* NON-STATE ALTERING KEYS
+		 * Keys which alter the mode of operation without 
+		 * changing the GraphMapper-state are handled here.
+		 */
+		case 'g':
+		case 't':
+			_searchType = _searchType == AStar::GRAPH
+							? AStar::TREE
+							: AStar::GRAPH;
+			printf("Search tye: %s\n", 
+					_searchType==AStar::GRAPH?"GRAPH":"TREE");
+			_pathcreator.FindPath(_searchType);
+			break;
 	}
 
-	if (_state != nstate) {
+	if (nstate != NONE && _state != nstate) {
 		_state = nstate;
 		OnStateChanged();
 	}
@@ -123,19 +148,8 @@ GraphMapper::ActionResult GraphMapper::PerformAction(PathNode *node)
 
 			// Update the current path using the previously 
 			// used PathNodes.
-
-			/*
-			¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤
-			Need to find the node (if exist) that is before the new
-			blocking wall. 
-			Do an astar search from that node
-			OR
-			Do an astar search again from the original node
-			Not quite sure.....
-			¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤
-			*/
-			newPath = _pathcreator.TestPath(GetPath());
-			//_pathcreator.FindPath();
+			
+			_pathcreator.FindPath(_searchType);
 			return ACTION_SUCCESS;
 		}
 		default:
@@ -155,7 +169,7 @@ GraphMapper::ActionResult GraphMapper::PerformAction(PathNode *node1,
 		case PATHFIND: 
 		{
 			// Find a path between the two nodes
-			_pathcreator.FindPath(node1, node2);
+			_pathcreator.FindPath(node1, node2, _searchType);
 			return ACTION_SUCCESS;
 		}
 		default:
