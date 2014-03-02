@@ -120,7 +120,7 @@ AStarNode* AStar::GetNode(PathNode *pathnode, AStar::SearchType stype)
 		_nmap[pathnode] = astar;
 	} else if (stype == TREE) {
 		astar = new AStarNode(pathnode);
-		astar->CalculateH(_target, 2);
+		astar->CalculateH(_target);
 	}
 
 	return astar;
