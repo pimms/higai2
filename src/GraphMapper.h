@@ -75,6 +75,7 @@ private:
 	State _state;
 
 	AStar::SearchType _searchType;
+	bool _drawProgress;
 };
 
 

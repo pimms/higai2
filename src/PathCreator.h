@@ -27,9 +27,14 @@ public:
 	 */
 	Path* GetPath() const;
 
+	/* Define wether or not to draw the intermediates in A*.
+	 */
+	void SetProgressRendering(bool flag);
+
 private:
 	World *_world;
 	Renderer *_renderer;
+	bool _drawProgress;
 
 	PathNode *_curA;
 	PathNode *_curB;

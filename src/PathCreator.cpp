@@ -10,7 +10,8 @@ PathCreator::PathCreator(World *world, Renderer *renderer)
 		_path(NULL),
 		_curA(NULL),
 		_curB(NULL),
-		_renderer(renderer)
+		_renderer(renderer),
+		_drawProgress(false)
 {
 
 }
@@ -40,7 +41,10 @@ Path* PathCreator::FindPath(PathNode *a,
 	}
 
 	AStar astar(_world);
-	astar.SetRenderer(_renderer);
+	if (_drawProgress) {
+		astar.SetRenderer(_renderer);
+	}
+
 	_path = astar.Find(a, b, st);
 	_curA = a;
 	_curB = b;
@@ -52,4 +56,10 @@ Path* PathCreator::FindPath(PathNode *a,
 Path* PathCreator::GetPath() const
 {
 	return _path;
+}
+
+
+void PathCreator::SetProgressRendering(bool flag)
+{
+	_drawProgress = flag;
 }
