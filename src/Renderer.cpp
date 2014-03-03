@@ -36,12 +36,14 @@ void Renderer::DrawWorld(World *world)
 
 void Renderer::DrawPath(World *world, const Path *path)
 {
-	DrawPath(world, path->GetNodes(), Color(255, 0, 0, 255));
-	DrawPath(world, path->GetOptimized(), Color(0, 0, 255, 255));
+	DrawPath(world, path->GetNodes(), path->GetSplitDivisor(), 
+			 Color(255, 0, 0), Color(255, 0, 0));
+	DrawPath(world, path->GetOptimized(), path->GetSplitDivisor(), 
+			 Color(0, 0, 255), Color(0, 255, 255));
 }
 
 void Renderer::DrawPath(World *world, const list<PathNode*> &path,
-                        Color color)
+                        const PathNode *div, Color orig, Color split)
 {
     int sizeX, sizeY;
     world->GetSize(&sizeX, &sizeY);
@@ -50,9 +52,13 @@ void Renderer::DrawPath(World *world, const list<PathNode*> &path,
     list<PathNode*>::const_iterator next = path.begin();
     next++;
 
-    color.Assign(_window->GetRenderer());
+    orig.Assign(_window->GetRenderer());
 
     while (next != path.end()) {
+		if (*next == div) {
+			split.Assign(_window->GetRenderer());
+		}
+
         Vec cp, np;
         cp = GetTileCoordinate(world, *cur, true);
         np = GetTileCoordinate(world, *next, true);

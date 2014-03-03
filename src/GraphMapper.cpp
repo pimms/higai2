@@ -160,8 +160,8 @@ GraphMapper::ActionResult GraphMapper::PerformAction(PathNode *node)
 
 			// Update the current path using the previously 
 			// used PathNodes.
-			NewPath();
 			//_pathcreator.FindPath(_searchType);
+			_pathcreator.FindAgentPath();
 			return ACTION_SUCCESS;
 		}
 		default:
@@ -202,23 +202,6 @@ PathNode* GraphMapper::GetNodeAtPixel(int x, int y)
 }
 
 void GraphMapper::NewPath() {
-	PathAnalyzer pa(_world);
-	Path *path = _pathcreator.GetPath();
-	PathNode* a = path->GetNodes().front();
-	PathNode* b = a;
-	
-	for (int i = 1; i <= path->GetNodes().size(); i++)
-	{
-		b++;
-		if (!pa.IsClearLineOfSight(a, b));
-		{
-			FindNewPath(a, path->GetNodes().back());
-			//_pathcreator.FindPath(a, path->GetNodes().back(), _searchType);
-			return;
-		}
-		a++;
-	}
-	return;
 }
 
 void GraphMapper::FindNewPath(PathNode *a, PathNode *end) {

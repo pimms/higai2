@@ -26,7 +26,8 @@ public:
 
     void DrawWorld(World *world);
 	void DrawPath(World*, const Path*);
-    void DrawPath(World*, const list<PathNode*>&, Color=Color(0,0,0));
+    void DrawPath(World*, const list<PathNode*>&, const PathNode *div, 
+				  Color orig=Color(0,0,0), Color split=Color(1,1,1));
 
     void DrawPathNode(World *world, PathNode *node);
     void DrawPathNode(World *world, PathNode *node, Color c);

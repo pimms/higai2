@@ -4,6 +4,7 @@
 #include "Path.h"
 #include "AStar.h"
 #include "Renderer.h"
+#include "PathAnalyzer.h"
 
 
 PathCreator::PathCreator(World *world, Renderer *renderer)
@@ -50,6 +51,50 @@ Path* PathCreator::FindPath(PathNode *a,
 	_path = astar.Find(a, b, st);
 	_curA = a;
 	_curB = b;
+
+	return _path;
+}
+
+
+Path* PathCreator::FindAgentPath()
+{
+	if (!_path) {
+		return NULL;
+	}
+
+	PathAnalyzer pa(_world);	
+	const list<PathNode*> *path;
+	list<PathNode*>::const_iterator ita, itb;
+	PathNode *front = NULL;
+	PathNode *goal = NULL;	
+
+	path = &_path->GetOptimized();
+	ita = path->begin();
+	itb = std::next(ita);
+	front = path->front();
+	goal = path->back();
+
+	while (itb != path->end()) {
+		if (!pa.IsClearLineOfSight(*ita, *itb)) {
+			AStar astar(_world);
+			if (_drawProgress) {
+				astar.SetRenderer(_renderer);
+			}
+
+			Path *path1, *path2;
+			path1 = astar.Find(front, *ita);
+			path2 = astar.Find(*ita, goal);
+
+			_path = Path::JoinPaths(path1, path2, _world);	
+
+			delete path1;
+			delete path2;
+			break;
+		}
+
+		ita++;
+		itb++;
+	}
 
 	return _path;
 }

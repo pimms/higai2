@@ -4,8 +4,40 @@
 #include "PathNode.h"
 
 
+#define COPY(_src, _dst) 							\
+	{list<PathNode*>::iterator it = _src.begin(); 	\
+	while (it != _src.end()) { 						\
+		_dst.push_back(*it); it++; 					\
+	}}
+
+Path* Path::JoinPaths(Path *path1, Path *path2, World *world)
+{
+	Path *p = NULL;
+	list<PathNode*> nodes;
+	list<PathNode*> opt;
+	p = new Path(world);
+
+	if (path1) {
+		COPY(path1->_nodes, nodes);
+		COPY(path1->_optimized, opt);
+	}
+	
+	if (path2) {
+		p->_divisor = path2->_nodes.front();
+		COPY(path2->_nodes, nodes);
+		COPY(path2->_optimized, opt);
+	}
+	
+	p->_nodes = nodes;
+	p->_optimized = opt;
+
+	return p;
+}
+
+
 Path::Path(World *world) 
-	:	_world(world)
+	:	_world(world),
+		_divisor(NULL)
 {
 
 }
@@ -62,4 +94,10 @@ float Path::GetLength() const
 float Path::GetOptimizedLength() const
 {
 	return GetLength(_optimized);
+}
+
+
+const PathNode* Path::GetSplitDivisor() const
+{
+	return _divisor;
 }

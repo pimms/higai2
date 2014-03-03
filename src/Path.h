@@ -16,6 +16,8 @@ class World;
  */
 class Path {
 public:
+	static Path* JoinPaths(Path *path1, Path *path2, World *world);
+
 	Path(World *world);
 
 	void SetNodes(list<PathNode*> nodes);
@@ -30,8 +32,12 @@ public:
 	float GetLength() const;
 	float GetOptimizedLength() const;
 
+	const PathNode* GetSplitDivisor() const;
+
 private:
 	World *_world;
 	list<PathNode*> _nodes;
 	list<PathNode*> _optimized;
+
+	PathNode *_divisor;
 };

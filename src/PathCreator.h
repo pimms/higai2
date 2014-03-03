@@ -23,6 +23,14 @@ public:
 	 */
 	Path* FindPath(PathNode *a, PathNode *b, AStar::SearchType st);
 
+	/* Treats the world as a partially observable environment,
+	 * and simulates the path an agent would take if he was 
+	 * able to view a wall from an infinite distance. This method
+	 * does nothing if a wall has not been added and is blocking
+	 * the existing path.
+	 */
+	Path* FindAgentPath();
+
 	/* Return the path found most recently.
 	 */
 	Path* GetPath() const;
