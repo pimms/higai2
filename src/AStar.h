@@ -57,7 +57,7 @@ private:
 
 	/* Helpful statistics about the last path-finding
 	 */
-	void PrintStatistics(Timer t, bool success) const;
+	void PrintStatistics(Timer t, bool success, const Path *p=NULL) const;
 
 	/* Mapper function between PathNodes and AStarNodes. 
 	 *

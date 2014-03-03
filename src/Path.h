@@ -26,6 +26,10 @@ public:
 	/* Get the optimized path */
 	const list<PathNode*>& GetOptimized() const;
 
+	float GetLength(const list<PathNode*> &nodes) const;
+	float GetLength() const;
+	float GetOptimizedLength() const;
+
 private:
 	World *_world;
 	list<PathNode*> _nodes;

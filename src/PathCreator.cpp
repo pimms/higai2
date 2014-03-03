@@ -3,6 +3,7 @@
 #include "PathNode.h"
 #include "Path.h"
 #include "AStar.h"
+#include "Renderer.h"
 
 
 PathCreator::PathCreator(World *world, Renderer *renderer)
@@ -42,6 +43,7 @@ Path* PathCreator::FindPath(PathNode *a,
 
 	AStar astar(_world);
 	if (_drawProgress) {
+		_renderer->DrawWorld(_world);
 		astar.SetRenderer(_renderer);
 	}
 

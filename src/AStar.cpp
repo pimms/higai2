@@ -59,14 +59,15 @@ Path* AStar::Find(PathNode *start, PathNode *end, SearchType stype)
     }
 
 	time.Stop();
-	PrintStatistics(time, success);
 		
 	if (!success) {
+		PrintStatistics(time, success);
 		CleanUp();
 		return NULL;
 	}
 
 	Path *path = CreatePath(node);
+	PrintStatistics(time, success, path);
 	CleanUp();
 
 	return path;
@@ -94,13 +95,26 @@ void AStar::CleanUp()
 }
 
 
-void AStar::PrintStatistics(Timer t, bool success) const
-{
-	printf("Path%sfound:\n", success?" ":" NOT ");
+void AStar::PrintStatistics(Timer t, bool success, const Path *path) const
+{	
+	int bytes = sizeof(AStarNode) * _open.size() +
+				sizeof(AStarNode) * _closed.size();
 
+
+	printf("Path%sfound:\n", success?" ":" NOT ");
 	printf(" - %f seconds spent\n", t.Get());
 	printf(" - %lu nodes searched\n", _closed.size());
 	printf(" - %lu open nodes\n", _open.size());
+	printf(" - %i bytes used\n", bytes);
+
+	if (path && success) {
+		float len = path->GetLength();
+		float olen = path->GetOptimizedLength();
+		float d = 100.f - (olen / len) * 100.f;
+		printf(" - %0.1f length\n", len);
+		printf(" - %0.1f optimized length (%0.1f%% shorter)\n", olen, d);
+	}
+
 	printf("\n");
 }
 

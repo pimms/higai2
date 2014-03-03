@@ -20,7 +20,7 @@ void InitializeWorld(World *world)
     }
 }
 
-#define WORLD_SIZE 8
+#define WORLD_SIZE 20
 int ai_main(int argc, char *argv[])
 {
 	// Initialize the world
