@@ -60,7 +60,6 @@ Path* PathCreator::GetPath() const
 	return _path;
 }
 
-
 void PathCreator::SetProgressRendering(bool flag)
 {
 	_drawProgress = flag;

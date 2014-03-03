@@ -3,6 +3,7 @@
 #include "PathNode.h"
 #include "Path.h"
 #include "AStar.h"
+#include "PathAnalyzer.h"
 
 
 const char *GRAPH_MAPPER_HELP =
@@ -159,7 +160,8 @@ GraphMapper::ActionResult GraphMapper::PerformAction(PathNode *node)
 
 			// Update the current path using the previously 
 			// used PathNodes.
-			_pathcreator.FindPath(_searchType);
+			NewPath();
+			//_pathcreator.FindPath(_searchType);
 			return ACTION_SUCCESS;
 		}
 		default:
@@ -199,3 +201,26 @@ PathNode* GraphMapper::GetNodeAtPixel(int x, int y)
 	return _world->GetNode(idx.x, idx.y);
 }
 
+void GraphMapper::NewPath() {
+	PathAnalyzer pa(_world);
+	Path *path = _pathcreator.GetPath();
+	PathNode* a = path->GetNodes().front();
+	PathNode* b = a;
+	
+	for (int i = 1; i <= path->GetNodes().size(); i++)
+	{
+		b++;
+		if (!pa.IsClearLineOfSight(a, b));
+		{
+			FindNewPath(a, path->GetNodes().back());
+			//_pathcreator.FindPath(a, path->GetNodes().back(), _searchType);
+			return;
+		}
+		a++;
+	}
+	return;
+}
+
+void GraphMapper::FindNewPath(PathNode *a, PathNode *end) {
+	_pathcreator.FindPath(a, end, _searchType);
+}
