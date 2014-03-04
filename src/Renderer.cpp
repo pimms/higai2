@@ -64,6 +64,14 @@ void Renderer::DrawPath(World *world, const list<PathNode*> &path,
 		np = GetTileCoordinate(world, *next, true);
 
 		SDL_RenderDrawLine(_window->GetRenderer(),cp.x,cp.y,np.x,np.y);
+	
+		cp.x -= 3;
+		cp.y -= 3;
+		DrawRect(cp, Vec(6,6));
+			
+		np.x -= 3;
+		np.y -= 3;
+		DrawRect(np, Vec(6,6));
 
 		next++;
 		cur++;
@@ -97,6 +105,7 @@ void Renderer::DrawPathNode(World *world, PathNode *node, Color c)
 
 	SetRenderColor(c);
 	DrawRect(pos, dim);
+
 
 	// Return to black color
 	SetRenderColor(Color(0,0,0));
