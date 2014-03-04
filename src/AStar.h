@@ -125,7 +125,7 @@ public:
 	/* Calculate the heuristics cost from _pnode to target.
 	 * H = cost * manhattan_dist(_pnode, target)
 	 */
-	virtual void CalculateH(PathNode *target, int cost=1);
+	virtual void CalculateH(PathNode *target);
 	virtual void SetParent(AStarNode *parent);
 	AStarNode* GetParent();
 

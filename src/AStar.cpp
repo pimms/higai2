@@ -42,18 +42,17 @@ Path* AStar::Find(PathNode *start, PathNode *end, SearchType stype)
 	while (_open.size() > 0 && ++iterations < max_iterations) {
 		AStarNode *old = node;
 		node = SelectNextFromOpen();
-
 		DrawCurrentNode(old, node);
-
-		if (node->PNode() == end) {
-			success = true;
-			break;
-		}
 
 		if (stype == GRAPH) {
 			_closed.push_back(node);
 		}
 		RemoveFromOpen(node);
+
+		if (node->PNode() == end) {
+			success = true;
+			break;
+		}
 
 		ExpandChildren(node, stype);
 	}
@@ -279,17 +278,16 @@ AStarNode::AStarNode(PathNode *pathNode)
 
 int AStarNode::F()
 {
-	return _g + _h;
+	return _g*11 + _h*10;
 }
 
 
-void AStarNode::CalculateH(PathNode *target, int cost)
+void AStarNode::CalculateH(PathNode *target)
 {
 	Vec p1 = _pnode->GetPosition();
 	Vec p2 = target->GetPosition();
 
 	_h = abs(p1.x-p2.x) + abs(p1.y-p2.y);
-	_h *= cost;
 }
 
 void AStarNode::SetParent(AStarNode *parent)
