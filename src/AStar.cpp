@@ -278,7 +278,7 @@ AStarNode::AStarNode(PathNode *pathNode)
 
 int AStarNode::F()
 {
-	return _g*11 + _h*10;
+	return _g+ _h;
 }
 
 
