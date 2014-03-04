@@ -7,45 +7,45 @@
 
 
 const char *GRAPH_MAPPER_HELP =
-		"You can interact with the world in many different ways.\n"
-		"Change between states by clicking their respective toggle-keys.\n"
-		"The states alter how clicks on tiles are interpreted.\n"
-		"\nStates:\n"
+    "You can interact with the world in many different ways.\n"
+    "Change between states by clicking their respective toggle-keys.\n"
+    "The states alter how clicks on tiles are interpreted.\n"
+    "\nStates:\n"
 
-		"\t(p) PATHFIND\n"
-		"\t\tClicks on two nodes will, if possible, find the shortest\n"
-		"\t\tpath between those nodes.\n"
+    "\t(p) PATHFIND\n"
+    "\t\tClicks on two nodes will, if possible, find the shortest\n"
+    "\t\tpath between those nodes.\n"
 
-		"\t(w) WALL_ADD\n"
-		"\t\tToggle the state of a tile - green is walkable and blue\n"
-		"\t\tis a wall. The path will update when modifiying.\n" 	
+    "\t(w) WALL_ADD\n"
+    "\t\tToggle the state of a tile - green is walkable and blue\n"
+    "\t\tis a wall. The path will update when modifiying.\n"
 
-		"\n"
-		
-		"Some modes of operation can be changed without altering the\n"
-		"state. Most secondary options affect how the pathfinding is\n"
-		"executed.\n"
-		
-		"\t(g/t) Toggle tree-search / graph-search\n"
-		"\t\tAlter how the A* algorithm is run.\n"
+    "\n"
 
-		"\t(d) Draw progress of A*\n"
-		"\t\tThe tile currently being visited is drawn in orange\n"
-		"\t\twhen this option is enabled.\n"
+    "Some modes of operation can be changed without altering the\n"
+    "state. Most secondary options affect how the pathfinding is\n"
+    "executed.\n"
 
-		"\n";
+    "\t(g/t) Toggle tree-search / graph-search\n"
+    "\t\tAlter how the A* algorithm is run.\n"
+
+    "\t(d) Draw progress of A*\n"
+    "\t\tThe tile currently being visited is drawn in orange\n"
+    "\t\twhen this option is enabled.\n"
+
+    "\n";
 
 
 
-GraphMapper::GraphMapper(World *world, Window *window, 
-						 Renderer *renderer)
+GraphMapper::GraphMapper(World *world, Window *window,
+                         Renderer *renderer)
 	: 	_world(world),
-		_window(window),
-		_state(NONE),
-		_pathcreator(world, renderer),
-		_searchType(AStar::GRAPH),
-		_renderer(renderer),
-		_drawProgress(false)
+	    _window(window),
+	    _state(NONE),
+	    _pathcreator(world, renderer),
+	    _searchType(AStar::GRAPH),
+	    _renderer(renderer),
+	    _drawProgress(false)
 {
 	printf("%s", GRAPH_MAPPER_HELP);
 }
@@ -55,7 +55,7 @@ GraphMapper::~GraphMapper()
 }
 
 
-void GraphMapper::OnMouseClick(Vec pos) 
+void GraphMapper::OnMouseClick(Vec pos)
 {
 	PathNode *node = GetNodeAtPixel(pos.x, pos.y);
 	if (!node) return;
@@ -66,7 +66,7 @@ void GraphMapper::OnMouseClick(Vec pos)
 	if (PerformAction(node) == ACTION_FAILURE) {
 		/* The current state requires two PathNodes. _lastNode and
 		 * the currently pressed PathNode are the two nodes in
-		 * question. 
+		 * question.
 		 */
 		if (_lastNode) {
 			if (PerformAction(_lastNode, node) == ACTION_SUCCESS) {
@@ -78,37 +78,37 @@ void GraphMapper::OnMouseClick(Vec pos)
 	}
 }
 
-void GraphMapper::OnKeyDown(int key) 
+void GraphMapper::OnKeyDown(int key)
 {
 	State nstate = NONE;
 
 	switch (key) {
-		/* STATE ALTERING KEYS */
-		case 'p':
-			nstate = PATHFIND;
-			break;
-		case 'w':
-			nstate = ADD_WALL;
-			break;
-		
-		/* NON-STATE ALTERING KEYS
-		 * Keys which alter the mode of operation without 
-		 * changing the GraphMapper-state are handled here.
-		 */
-		case 'g':
-		case 't':
-			_searchType = _searchType == AStar::GRAPH
-							? AStar::TREE
-							: AStar::GRAPH;
-			printf("Search tye: %s\n", 
-					_searchType==AStar::GRAPH?"GRAPH":"TREE");
-			_pathcreator.FindPath(_searchType);
-			break;
+	/* STATE ALTERING KEYS */
+	case 'p':
+		nstate = PATHFIND;
+		break;
+	case 'w':
+		nstate = ADD_WALL;
+		break;
 
-		case 'd':
-			_drawProgress = !_drawProgress;
-			printf("Draw progress: %s\n", _drawProgress?"true":"false");
-			_pathcreator.SetProgressRendering(_drawProgress);
+	/* NON-STATE ALTERING KEYS
+	 * Keys which alter the mode of operation without
+	 * changing the GraphMapper-state are handled here.
+	 */
+	case 'g':
+	case 't':
+		_searchType = _searchType == AStar::GRAPH
+		              ? AStar::TREE
+		              : AStar::GRAPH;
+		printf("Search tye: %s\n",
+		       _searchType==AStar::GRAPH?"GRAPH":"TREE");
+		_pathcreator.FindPath(_searchType);
+		break;
+
+	case 'd':
+		_drawProgress = !_drawProgress;
+		printf("Draw progress: %s\n", _drawProgress?"true":"false");
+		_pathcreator.SetProgressRendering(_drawProgress);
 	}
 
 	if (nstate != NONE && _state != nstate) {
@@ -125,67 +125,65 @@ const Path* GraphMapper::GetPath() const
 
 
 /***** Private Methods *****/
-void GraphMapper::OnStateChanged() 
+void GraphMapper::OnStateChanged()
 {
 	_lastNode = NULL;
-	
+
 	char state[32];
 
 	switch (_state) {
-		case PATHFIND:
-			strcpy(state, "PATHFIND");
-			break;
-		case ADD_WALL:
-			strcpy(state, "ADD_WALL");
-			break;
-		case NONE:
-			strcpy(state, "NONE");
-			break;
+	case PATHFIND:
+		strcpy(state, "PATHFIND");
+		break;
+	case ADD_WALL:
+		strcpy(state, "ADD_WALL");
+		break;
+	case NONE:
+		strcpy(state, "NONE");
+		break;
 	}
 
 	printf("[%s]\n", state);
 }
 
-GraphMapper::ActionResult GraphMapper::PerformAction(PathNode *node) 
+GraphMapper::ActionResult GraphMapper::PerformAction(PathNode *node)
 {
 	switch (_state) {
-		case ADD_WALL:
-		{	
-			// Toggle the type of the node
-			PathNode::Type t = node->GetType();
-			t = (t==PathNode::WALL) 
-					? PathNode::WALKABLE 
-					: PathNode::WALL;
-			node->SetType(t);
+	case ADD_WALL: {
+		// Toggle the type of the node
+		PathNode::Type t = node->GetType();
+		t = (t==PathNode::WALL)
+		    ? PathNode::WALKABLE
+		    : PathNode::WALL;
+		node->SetType(t);
 
-			// Update the current path using the previously 
-			// used PathNodes.
-			//_pathcreator.FindPath(_searchType);
-			_pathcreator.FindAgentPath();
-			return ACTION_SUCCESS;
-		}
-		default:
-			return ACTION_FAILURE;
+		// Update the current path using the previously
+		// used PathNodes.
+		//_pathcreator.FindPath(_searchType);
+		_pathcreator.FindAgentPath();
+		return ACTION_SUCCESS;
+	}
+	default:
+		return ACTION_FAILURE;
 	}
 
 	return ACTION_FAILURE;
 }
 
-GraphMapper::ActionResult GraphMapper::PerformAction(PathNode *node1, 
-													PathNode *node2) 
+GraphMapper::ActionResult GraphMapper::PerformAction(PathNode *node1,
+        PathNode *node2)
 {
 	switch (_state) {
-		case NONE:
-			printf("No state. See the help output.\n");
-			return ACTION_FAILURE;	
-		case PATHFIND: 
-		{
-			// Find a path between the two nodes
-			_pathcreator.FindPath(node1, node2, _searchType);
-			return ACTION_SUCCESS;
-		}
-		default:
-			return ACTION_FAILURE;
+	case NONE:
+		printf("No state. See the help output.\n");
+		return ACTION_FAILURE;
+	case PATHFIND: {
+		// Find a path between the two nodes
+		_pathcreator.FindPath(node1, node2, _searchType);
+		return ACTION_SUCCESS;
+	}
+	default:
+		return ACTION_FAILURE;
 	}
 
 	return ACTION_FAILURE;
@@ -197,13 +195,15 @@ PathNode* GraphMapper::GetNodeAtPixel(int x, int y)
 	Vec res = _window->GetResolution();
 	Vec count = _world->GetSize();
 	Vec idx(x / (res.x / count.x),
-			y / (res.y / count.y));
+	        y / (res.y / count.y));
 	return _world->GetNode(idx.x, idx.y);
 }
 
-void GraphMapper::NewPath() {
+void GraphMapper::NewPath()
+{
 }
 
-void GraphMapper::FindNewPath(PathNode *a, PathNode *end) {
+void GraphMapper::FindNewPath(PathNode *a, PathNode *end)
+{
 	_pathcreator.FindPath(a, end, _searchType);
 }

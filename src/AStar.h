@@ -32,43 +32,43 @@ public:
 		TREE,
 	};
 
-    AStar(World *world);
-    ~AStar();
-	
+	AStar(World *world);
+	~AStar();
+
 	/* Rendering the pathfinding is completely optional.
 	 * If the renderer is assigned, the progress will be drawn.
 	 */
 	void SetRenderer(Renderer *renderer);
 
-	/* Attempts to find a path between "s" and "e". If no path is 
+	/* Attempts to find a path between "s" and "e". If no path is
 	 * available, NULL is returned.
 	 */
-    Path* Find(PathNode *s, PathNode *e, SearchType=GRAPH);
+	Path* Find(PathNode *s, PathNode *e, SearchType=GRAPH);
 
 private:
 	/* Initialize required values before the pathfinding actually
 	 * occurs.
 	 */
-    void Initialize(PathNode *start, PathNode *end);
+	void Initialize(PathNode *start, PathNode *end);
 
 	/* Clean up after the recent path finding.
 	 */
-    void CleanUp();
+	void CleanUp();
 
 	/* Helpful statistics about the last path-finding
 	 */
 	void PrintStatistics(Timer t, bool success, const Path *p=NULL) const;
 
-	/* Mapper function between PathNodes and AStarNodes. 
+	/* Mapper function between PathNodes and AStarNodes.
 	 *
 	 * GRAPH:
-	 * If the PathNode's corresponding AStarNode has not been 
+	 * If the PathNode's corresponding AStarNode has not been
 	 * requested before, it is created and stored in "_nmap".
 	 *
 	 * TREE:
 	 * A new AStarNode* is created on every request.
 	 */
-    AStarNode* GetNode(PathNode*, SearchType);
+	AStarNode* GetNode(PathNode*, SearchType);
 
 	/* Back-track from the destination-AStarNode to create the
 	 * full path found.
@@ -89,21 +89,21 @@ private:
 	bool IsClosed(AStarNode *node);
 
 	/* Expand the node and add it's neighbours to OPEN. */
-    void ExpandChildren(AStarNode *node, SearchType stype);
+	void ExpandChildren(AStarNode *node, SearchType stype);
 
 	/* If a Renderer has been assigned, draw the current open
-	 * tile and present the buffer. The previoius tile is 
+	 * tile and present the buffer. The previoius tile is
 	 * drawn in it's original color.
 	 */
 	void DrawCurrentNode(AStarNode *prev, AStarNode *cur);
 
-    map<PathNode*,AStarNode*> _nmap;
-    PathNode *_target;
+	map<PathNode*,AStarNode*> _nmap;
+	PathNode *_target;
 
-    vector<AStarNode*> _open;
-    vector<AStarNode*> _closed;
+	vector<AStarNode*> _open;
+	vector<AStarNode*> _closed;
 
-    World *_world;
+	World *_world;
 	Renderer *_renderer;
 };
 
@@ -118,25 +118,25 @@ private:
 class AStarNode
 {
 public:
-    AStarNode(PathNode *pathNode);
+	AStarNode(PathNode *pathNode);
 
-    virtual int F();
+	virtual int F();
 
 	/* Calculate the heuristics cost from _pnode to target.
 	 * H = cost * manhattan_dist(_pnode, target)
 	 */
-    virtual void CalculateH(PathNode *target, int cost=1);
-    virtual void SetParent(AStarNode *parent);
+	virtual void CalculateH(PathNode *target, int cost=1);
+	virtual void SetParent(AStarNode *parent);
 	AStarNode* GetParent();
 
-    PathNode* PNode();
+	PathNode* PNode();
 
 	void PrintInfo() const;
 
 protected:
-    PathNode *_pnode;
-    AStarNode *_parent;
+	PathNode *_pnode;
+	AStarNode *_parent;
 
-    int _h;
-    int _g;
+	int _h;
+	int _g;
 };

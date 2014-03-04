@@ -15,14 +15,14 @@ typedef unsigned char byte;
 class Color
 {
 public:
-    Color();
-    Color(byte pr, byte pg, byte pb, byte pa=255);
+	Color();
+	Color(byte pr, byte pg, byte pb, byte pa=255);
 
-    void Set(byte pr, byte pg, byte pb, byte pa=255);
-    void Assign(SDL_Renderer *renderer);
+	void Set(byte pr, byte pg, byte pb, byte pa=255);
+	void Assign(SDL_Renderer *renderer);
 
-    byte r;
-    byte g;
-    byte b;
-    byte a;
+	byte r;
+	byte g;
+	byte b;
+	byte a;
 };

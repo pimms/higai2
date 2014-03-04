@@ -22,28 +22,28 @@ class Path;
 class Renderer
 {
 public:
-    Renderer(Window *Window);
+	Renderer(Window *Window);
 
-    void DrawWorld(World *world);
+	void DrawWorld(World *world);
 	void DrawPath(World*, const Path*);
-    void DrawPath(World*, const list<PathNode*>&, const PathNode *div, 
-				  Color orig=Color(0,0,0), Color split=Color(1,1,1));
+	void DrawPath(World*, const list<PathNode*>&, const PathNode *div,
+	              Color orig=Color(0,0,0), Color split=Color(1,1,1));
 
-    void DrawPathNode(World *world, PathNode *node);
-    void DrawPathNode(World *world, PathNode *node, Color c);
+	void DrawPathNode(World *world, PathNode *node);
+	void DrawPathNode(World *world, PathNode *node, Color c);
 
-    void SetRenderColor(PathNode *node);
+	void SetRenderColor(PathNode *node);
 	void SetRenderColor(Color color);
-    void DrawRect(Vec pos, Vec dim);
+	void DrawRect(Vec pos, Vec dim);
 
 	void Present();
 
 private:
-    Vec GetTileDimensions(World *world);
+	Vec GetTileDimensions(World *world);
 
-    /* If center is true, the center of the tile is returned.
-     * Otherwise, the top left corner is returned. */
-    Vec GetTileCoordinate(World *world, PathNode *node, bool center);
+	/* If center is true, the center of the tile is returned.
+	 * Otherwise, the top left corner is returned. */
+	Vec GetTileCoordinate(World *world, PathNode *node, bool center);
 
-    Window *_window;
+	Window *_window;
 };

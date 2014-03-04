@@ -9,11 +9,11 @@
 
 PathCreator::PathCreator(World *world, Renderer *renderer)
 	: 	_world(world),
-		_path(NULL),
-		_curA(NULL),
-		_curB(NULL),
-		_renderer(renderer),
-		_drawProgress(false)
+	    _path(NULL),
+	    _curA(NULL),
+	    _curB(NULL),
+	    _renderer(renderer),
+	    _drawProgress(false)
 {
 
 }
@@ -26,7 +26,7 @@ PathCreator::~PathCreator()
 }
 
 
-Path* PathCreator::FindPath(AStar::SearchType st) 
+Path* PathCreator::FindPath(AStar::SearchType st)
 {
 	if (_curA && _curB) {
 		return FindPath(_curA, _curB, st);
@@ -35,8 +35,8 @@ Path* PathCreator::FindPath(AStar::SearchType st)
 	return NULL;
 }
 
-Path* PathCreator::FindPath(PathNode *a, 
-							PathNode *b, AStar::SearchType st) 
+Path* PathCreator::FindPath(PathNode *a,
+                            PathNode *b, AStar::SearchType st)
 {
 	if (_path) {
 		delete _path;
@@ -62,11 +62,11 @@ Path* PathCreator::FindAgentPath()
 		return NULL;
 	}
 
-	PathAnalyzer pa(_world);	
+	PathAnalyzer pa(_world);
 	const list<PathNode*> *path;
 	list<PathNode*>::const_iterator ita, itb;
 	PathNode *front = NULL;
-	PathNode *goal = NULL;	
+	PathNode *goal = NULL;
 
 	path = &_path->GetOptimized();
 	ita = path->begin();
@@ -85,7 +85,7 @@ Path* PathCreator::FindAgentPath()
 			path1 = astar.Find(front, *ita);
 			path2 = astar.Find(*ita, goal);
 
-			_path = Path::JoinPaths(path1, path2, _world);	
+			_path = Path::JoinPaths(path1, path2, _world);
 
 			delete path1;
 			delete path2;

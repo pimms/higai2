@@ -14,7 +14,8 @@ class World;
  * A fancy wrapper around a list of PathNodes. The path
  * is attempted optimized when assigned to the Path.
  */
-class Path {
+class Path
+{
 public:
 	static Path* JoinPaths(Path *path1, Path *path2, World *world);
 

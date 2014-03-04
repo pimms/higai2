@@ -17,14 +17,15 @@ class Renderer;
  * Class used to handle input.
  * TODO: Rename the class to something more appropriate.
  */
-class GraphMapper : public InputListener {
+class GraphMapper : public InputListener
+{
 public:
 	GraphMapper(World *world, Window *window, Renderer *renderer);
 	~GraphMapper();
 
 	void OnMouseClick(Vec pos);
 	void OnKeyDown(int key);
-	
+
 	/* Return the current path. */
 	const Path* GetPath() const;
 
@@ -46,18 +47,18 @@ private:
 	ActionResult PerformAction(PathNode *node);
 
 	/* Attempts to perform an action based on the current state.
-	 * This method is called when PerformAction(PathNode*) has 
+	 * This method is called when PerformAction(PathNode*) has
 	 * failed twice. States requiring two PathNodes to function
 	 * should perform their action here and return ACTION_SUCCESS.
 	 */
 	ActionResult PerformAction(PathNode *node1, PathNode *node2);
-	
+
 	PathNode* GetNodeAtPixel(int x, int y);
 
 	void NewPath();
 
 	void FindNewPath(PathNode *a, PathNode *end);
-	
+
 
 	World *_world;
 	Window *_window;

@@ -15,19 +15,19 @@ public:
 	/* Create a world with sizeX times sizeY
 	 * number of tiles.
 	 */
-    World(unsigned sizeX, unsigned sizeY);
-    ~World();
+	World(unsigned sizeX, unsigned sizeY);
+	~World();
 
-    void GetSize(int *x, int *y);
-    Vec GetSize();
+	void GetSize(int *x, int *y);
+	Vec GetSize();
 
 	/* Return the PathNode at the position (if
 	 * possible)
 	 */
-    PathNode* GetNode(int x, int y);
-    PathNode* GetNode(Vec v);
+	PathNode* GetNode(int x, int y);
+	PathNode* GetNode(Vec v);
 
 
 private:
-    vector< vector<PathNode*> > _nodes;
+	vector< vector<PathNode*> > _nodes;
 };

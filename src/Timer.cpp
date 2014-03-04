@@ -1,7 +1,7 @@
 #include "Timer.h"
 #include <string.h>
 
-Timer::Timer() 
+Timer::Timer()
 {
 	memset(&_start, 0, sizeof(clock_t));
 	memset(&_end, 0, sizeof(clock_t));

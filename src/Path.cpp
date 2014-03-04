@@ -21,13 +21,13 @@ Path* Path::JoinPaths(Path *path1, Path *path2, World *world)
 		COPY(path1->_nodes, nodes);
 		COPY(path1->_optimized, opt);
 	}
-	
+
 	if (path2) {
 		p->_divisor = path2->_nodes.front();
 		COPY(path2->_nodes, nodes);
 		COPY(path2->_optimized, opt);
 	}
-	
+
 	p->_nodes = nodes;
 	p->_optimized = opt;
 
@@ -35,15 +35,15 @@ Path* Path::JoinPaths(Path *path1, Path *path2, World *world)
 }
 
 
-Path::Path(World *world) 
+Path::Path(World *world)
 	:	_world(world),
-		_divisor(NULL)
+	    _divisor(NULL)
 {
 
 }
 
 
-void Path::SetNodes(list<PathNode*> nodes) 
+void Path::SetNodes(list<PathNode*> nodes)
 {
 	_nodes = nodes;
 
@@ -52,12 +52,12 @@ void Path::SetNodes(list<PathNode*> nodes)
 	path.OptimizePath(_optimized);
 }
 
-const list<PathNode*>& Path::GetNodes() const 
+const list<PathNode*>& Path::GetNodes() const
 {
 	return _nodes;
 }
 
-const list<PathNode*>& Path::GetOptimized() const 
+const list<PathNode*>& Path::GetOptimized() const
 {
 	return _optimized;
 }

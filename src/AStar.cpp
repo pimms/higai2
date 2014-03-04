@@ -9,7 +9,7 @@
 /***** AStar *****/
 AStar::AStar(World *world)
 	:	_world(world),
-		_renderer(NULL)
+	    _renderer(NULL)
 {
 
 }
@@ -31,35 +31,35 @@ Path* AStar::Find(PathNode *start, PathNode *end, SearchType stype)
 	const int max_iterations = 10000;
 	int iterations = 0;
 
-    Initialize(start, end);
+	Initialize(start, end);
 	Timer time;
 	time.Start();
 
-    bool success = false;
-    AStarNode *node = GetNode(start, stype);
-    _open.push_back(node);
+	bool success = false;
+	AStarNode *node = GetNode(start, stype);
+	_open.push_back(node);
 
-    while (_open.size() > 0 && ++iterations < max_iterations) {
+	while (_open.size() > 0 && ++iterations < max_iterations) {
 		AStarNode *old = node;
 		node = SelectNextFromOpen();
-		
+
 		DrawCurrentNode(old, node);
 
-        if (node->PNode() == end) {
-            success = true;
-            break;
-        }
+		if (node->PNode() == end) {
+			success = true;
+			break;
+		}
 
 		if (stype == GRAPH) {
-			_closed.push_back(node);	
-		} 
+			_closed.push_back(node);
+		}
 		RemoveFromOpen(node);
-		
-        ExpandChildren(node, stype);
-    }
+
+		ExpandChildren(node, stype);
+	}
 
 	time.Stop();
-		
+
 	if (!success) {
 		PrintStatistics(time, success);
 		CleanUp();
@@ -77,28 +77,28 @@ Path* AStar::Find(PathNode *start, PathNode *end, SearchType stype)
 /***** Private Methods *****/
 void AStar::Initialize(PathNode *start, PathNode *end)
 {
-    _nmap.clear();
-    _open.clear();
-    _closed.clear();
+	_nmap.clear();
+	_open.clear();
+	_closed.clear();
 
-    _target = end;
+	_target = end;
 }
 
 void AStar::CleanUp()
 {
-    map<PathNode*,AStarNode*>::iterator it;
-    for (it = _nmap.begin(); it != _nmap.end(); it++) {
-        delete it->second;
-    }
+	map<PathNode*,AStarNode*>::iterator it;
+	for (it = _nmap.begin(); it != _nmap.end(); it++) {
+		delete it->second;
+	}
 
-    _target = NULL;
+	_target = NULL;
 }
 
 
 void AStar::PrintStatistics(Timer t, bool success, const Path *path) const
-{	
+{
 	int bytes = sizeof(AStarNode) * _open.size() +
-				sizeof(AStarNode) * _closed.size();
+	            sizeof(AStarNode) * _closed.size();
 
 
 	printf("Path%sfound:\n", success?" ":" NOT ");
@@ -140,7 +140,7 @@ AStarNode* AStar::GetNode(PathNode *pathnode, AStar::SearchType stype)
 	return astar;
 }
 
-Path* AStar::CreatePath(AStarNode *goal) 
+Path* AStar::CreatePath(AStarNode *goal)
 {
 	// Generate the path by stepping backwards
 	list<PathNode*> nodes;
@@ -156,7 +156,7 @@ Path* AStar::CreatePath(AStarNode *goal)
 }
 
 
-AStarNode* AStar::SelectNextFromOpen() 
+AStarNode* AStar::SelectNextFromOpen()
 {
 	int selected = 0;
 	AStarNode *node = _open[0];
@@ -171,13 +171,13 @@ AStarNode* AStar::SelectNextFromOpen()
 	return node;
 }
 
-void AStar::CloseNode(AStarNode *node) 
+void AStar::CloseNode(AStarNode *node)
 {
 	RemoveFromOpen(node);
 	_closed.push_back(node);
 }
 
-void AStar::RemoveFromOpen(AStarNode *node) 
+void AStar::RemoveFromOpen(AStarNode *node)
 {
 	for (int i=0; i<_open.size(); i++) {
 		if (_open[i] == node) {
@@ -187,7 +187,7 @@ void AStar::RemoveFromOpen(AStarNode *node)
 	}
 }
 
-bool AStar::IsOpen(AStarNode *node) 
+bool AStar::IsOpen(AStarNode *node)
 {
 	for (int i=0; i<_open.size(); i++) {
 		if (_open[i] == node) {
@@ -215,7 +215,7 @@ void AStar::ExpandChildren(AStarNode *node, AStar::SearchType stype)
 		Vec(-1, 0), Vec(1, 0),
 		Vec(0, -1), Vec(0, 1),
 	};
-	
+
 	const Vec coord = node->PNode()->GetPosition();
 
 	for (int i=0; i<4; i++) {
@@ -224,14 +224,14 @@ void AStar::ExpandChildren(AStarNode *node, AStar::SearchType stype)
 		Vec p = coord;
 		p.x += dirs[i].x;
 		p.y += dirs[i].y;
-		
+
 		/* The node is upated if:
 		 * - The node exists
 		 * - The node is not closed
 		 * - The node is walkable
 		 *
-		 * The node is also added to the open list if 
-		 * it has not been already. 
+		 * The node is also added to the open list if
+		 * it has not been already.
 		 * Note that when tree-searching, the CLOSED list is
 		 * empty at all times, and children are ALWAYS added to
 		 * the OPEN list.
@@ -250,13 +250,13 @@ void AStar::ExpandChildren(AStarNode *node, AStar::SearchType stype)
 }
 
 
-void AStar::DrawCurrentNode(AStarNode *prev, AStarNode *cur) 
+void AStar::DrawCurrentNode(AStarNode *prev, AStarNode *cur)
 {
 	if (_renderer) {
 		_renderer->DrawPathNode(_world, prev->PNode(),
-								Color(125, 125, 0));
-		_renderer->DrawPathNode(_world, cur->PNode(), 
-								Color(255, 255, 0));
+		                        Color(125, 125, 0));
+		_renderer->DrawPathNode(_world, cur->PNode(),
+		                        Color(255, 255, 0));
 		_renderer->Present();
 
 		// Manual Vsync. yolo.
@@ -268,10 +268,10 @@ void AStar::DrawCurrentNode(AStarNode *prev, AStarNode *cur)
 
 /***** AStarNode ****/
 AStarNode::AStarNode(PathNode *pathNode)
-    :	_pnode(pathNode),
-        _g(0),
-        _h(0),
-		_parent(NULL)
+	:	_pnode(pathNode),
+	    _g(0),
+	    _h(0),
+	    _parent(NULL)
 {
 
 }
@@ -279,26 +279,26 @@ AStarNode::AStarNode(PathNode *pathNode)
 
 int AStarNode::F()
 {
-    return _g + _h;
+	return _g + _h;
 }
 
 
 void AStarNode::CalculateH(PathNode *target, int cost)
 {
-    Vec p1 = _pnode->GetPosition();
-    Vec p2 = target->GetPosition();
+	Vec p1 = _pnode->GetPosition();
+	Vec p2 = target->GetPosition();
 
-    _h = abs(p1.x-p2.x) + abs(p1.y-p2.y);
+	_h = abs(p1.x-p2.x) + abs(p1.y-p2.y);
 	_h *= cost;
 }
 
 void AStarNode::SetParent(AStarNode *parent)
 {
-    _parent = parent;
-    _g = _parent->_g + 1;
+	_parent = parent;
+	_g = _parent->_g + 1;
 }
 
-AStarNode* AStarNode::GetParent() 
+AStarNode* AStarNode::GetParent()
 {
 	return _parent;
 }
@@ -306,13 +306,13 @@ AStarNode* AStarNode::GetParent()
 
 PathNode* AStarNode::PNode()
 {
-    return _pnode;
+	return _pnode;
 }
 
 
-void AStarNode::PrintInfo() const 
+void AStarNode::PrintInfo() const
 {
 	Vec pos = _pnode->GetPosition();
 	printf("pos[%i,%i] - F() = g%i + h%i\n",
-			pos.x, pos.y, _g, _h);
+	       pos.x, pos.y, _g, _h);
 }

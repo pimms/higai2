@@ -17,35 +17,35 @@ class InputListener;
 class Window
 {
 public:
-    Window();
-    ~Window();
+	Window();
+	~Window();
 
-    bool Init(int width, int height);
+	bool Init(int width, int height);
 
-    void GetResolution(int *x, int *y) const;
-    Vec GetResolution() const;
+	void GetResolution(int *x, int *y) const;
+	Vec GetResolution() const;
 
-    SDL_Renderer* GetRenderer() const;
+	SDL_Renderer* GetRenderer() const;
 
-    bool ShouldQuit() const;
+	bool ShouldQuit() const;
 
-    void HandleEvents();
+	void HandleEvents();
 
-    void ClearRenderer();
-    void PresentRenderer();
+	void ClearRenderer();
+	void PresentRenderer();
 
 	void AddListener(InputListener *listener);
 	void RemoveListener(InputListener *listener);
-		
+
 private:
 	void DispatchMouseClick(int x, int y);
 	void DispatchKeyDown(int key);
 
-    SDL_Window *_window;
-    SDL_Renderer *_renderer;
+	SDL_Window *_window;
+	SDL_Renderer *_renderer;
 
-    Vec _resolution;
-    bool _shouldQuit;
+	Vec _resolution;
+	bool _shouldQuit;
 
 	list<InputListener*> _listeners;
 };
@@ -55,6 +55,6 @@ private:
 class InputListener
 {
 public:
-    virtual void OnMouseClick(Vec pos) = 0;
+	virtual void OnMouseClick(Vec pos) = 0;
 	virtual void OnKeyDown(int key) = 0;
 };

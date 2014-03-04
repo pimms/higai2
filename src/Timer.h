@@ -4,10 +4,11 @@
 
 /* Class to track time.
  */
-class Timer {
+class Timer
+{
 public:
 	Timer();
-	
+
 	void Start();
 	void Stop();
 	float Get();
