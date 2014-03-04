@@ -14,6 +14,8 @@ const char *RENDERER_HELP =
 	"All aspects of paths are rendered over one another, meaning \n"
 	"that some attributes of a path may be hidden. The attributes\n"
 	"are rendered from least important to most important.\n"
+	"If you think something is missing, it is being drawn\n"
+	"over.\n"
 	"\n"
 	"The color codes are:\n"
 	"\tRED\n"
