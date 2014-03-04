@@ -176,7 +176,7 @@ AStarNode* AStar::SelectNextFromOpen(SearchType type)
 
 	for (int i=1; i<_open.size(); i++) {
 		if (type == GRAPH) {
-			if (_open[i]->F() <= node->F()) {
+			if (_open[i]->F() < node->F()) {
 				node = _open[i];
 				selected = i;
 			}
