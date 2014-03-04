@@ -41,7 +41,7 @@ Path* AStar::Find(PathNode *start, PathNode *end, SearchType stype)
 
 	while (_open.size() > 0 && ++iterations < max_iterations) {
 		AStarNode *old = node;
-		node = SelectNextFromOpen();
+		node = SelectNextFromOpen(stype);
 		DrawCurrentNode(old, node);
 
 		if (stype == GRAPH) {
@@ -89,6 +89,8 @@ void AStar::CleanUp()
 	for (it = _nmap.begin(); it != _nmap.end(); it++) {
 		delete it->second;
 	}
+	_nmap.clear();
+	_tmap.clear();
 
 	_target = NULL;
 }
@@ -139,6 +141,18 @@ AStarNode* AStar::GetNode(PathNode *pathnode, AStar::SearchType stype)
 	return astar;
 }
 
+int AStar::GetTValue(PathNode *node) 
+{
+	static int t_counter = 2147483647;
+
+	if (_tmap.count(node) != 0) {
+		_tmap[node] = t_counter;
+		t_counter--;
+	}
+
+	return _tmap[node];
+}
+
 Path* AStar::CreatePath(AStarNode *goal)
 {
 	// Generate the path by stepping backwards
@@ -155,15 +169,22 @@ Path* AStar::CreatePath(AStarNode *goal)
 }
 
 
-AStarNode* AStar::SelectNextFromOpen()
+AStarNode* AStar::SelectNextFromOpen(SearchType type)
 {
 	int selected = 0;
 	AStarNode *node = _open[0];
 
 	for (int i=1; i<_open.size(); i++) {
-		if (_open[i]->F() <= node->F()) {
-			node = _open[i];
-			selected = i;
+		if (type == GRAPH) {
+			if (_open[i]->F() <= node->F()) {
+				node = _open[i];
+				selected = i;
+			}
+		} else {
+			if (_open[i]->FT() <= node->FT()) {
+				node = _open[i];
+				selected = i;
+			}
 		}
 	}
 
@@ -240,6 +261,7 @@ void AStar::ExpandChildren(AStarNode *node, AStar::SearchType stype)
 			AStarNode *asnb = GetNode(nb, stype);
 			if (!IsClosed(asnb)) {
 				asnb->SetParent(node);
+				asnb->SetT(GetTValue(nb));
 				if (!IsOpen(asnb) || stype == TREE) {
 					_open.push_back(asnb);
 				}
@@ -270,6 +292,7 @@ AStarNode::AStarNode(PathNode *pathNode)
 	:	_pnode(pathNode),
 	    _g(0),
 	    _h(0),
+		_t(0),
 	    _parent(NULL)
 {
 
@@ -278,7 +301,23 @@ AStarNode::AStarNode(PathNode *pathNode)
 
 int AStarNode::F()
 {
-	return _g+ _h;
+	return _g+_h;
+}
+
+int AStarNode::FT() 
+{
+	return F() + _t;
+}
+
+
+void AStarNode::SetT(int t) 
+{
+	_t = t;
+}
+
+int AStarNode::T() 
+{
+	return _t;
 }
 
 

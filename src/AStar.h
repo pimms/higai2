@@ -70,6 +70,8 @@ private:
 	 */
 	AStarNode* GetNode(PathNode*, SearchType);
 
+	int GetTValue(PathNode*);
+
 	/* Back-track from the destination-AStarNode to create the
 	 * full path found.
 	 */
@@ -77,7 +79,7 @@ private:
 
 	/* Returns the next node to be examined in the pathfinding.
 	 */
-	AStarNode* SelectNextFromOpen();
+	AStarNode* SelectNextFromOpen(SearchType type);
 
 	/* Remove the node from OPEN and put it in CLOSED. */
 	void CloseNode(AStarNode *node);
@@ -98,6 +100,7 @@ private:
 	void DrawCurrentNode(AStarNode *prev, AStarNode *cur);
 
 	map<PathNode*,AStarNode*> _nmap;
+	map<PathNode*,int> _tmap;
 	PathNode *_target;
 
 	vector<AStarNode*> _open;
@@ -121,6 +124,10 @@ public:
 	AStarNode(PathNode *pathNode);
 
 	virtual int F();
+	int FT();
+
+	void SetT(int t);
+	int T();
 
 	/* Calculate the heuristics cost from _pnode to target.
 	 * H = cost * manhattan_dist(_pnode, target)
@@ -139,4 +146,5 @@ protected:
 
 	int _h;
 	int _g;
+	int _t;
 };
