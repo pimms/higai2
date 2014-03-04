@@ -7,6 +7,7 @@
 
 
 const char *GRAPH_MAPPER_HELP =
+	"INTERACTIVITY AND STATES\n"
     "You can interact with the world in many different ways.\n"
     "Change between states by clicking their respective toggle-keys.\n"
     "The states alter how clicks on tiles are interpreted.\n"

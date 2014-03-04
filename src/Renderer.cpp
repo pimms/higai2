@@ -9,11 +9,33 @@
 using std::map;
 using std::queue;
 
+const char *RENDERER_HELP =
+	"RENDERING AND COLOR CODES\n"
+	"All aspects of paths are rendered over one another, meaning \n"
+	"that some attributes of a path may be hidden. The attributes\n"
+	"are rendered from least important to most important.\n"
+	"\n"
+	"The color codes are:\n"
+	"\tRED\n"
+	"\tThe unoptimized path. This path consist only of straight\n"
+	"\tlines, and is the direct output from the algorithm.\n"
+	"\n"
+	"\tBLUE\n"
+	"\tThe optimized path. Wherever possible, diagonals replace\n"
+	"\tstraight lines.\n"
+	"\n"
+	"\tTURQUOISE\n"
+	"\tWhen a wall is inserted and is obstructing the OPTIMIZED path,\n"
+	"\tthe agent stops at this point and attempts to find another \n"
+	"\tway. The original, untouched segment of the path is blue, \n"
+	"\tthe newly found path is turquoise.\n"
+	"\n";
+
 
 Renderer::Renderer(Window *window)
 	:	_window(window)
 {
-
+	printf("%s", RENDERER_HELP);
 }
 
 
